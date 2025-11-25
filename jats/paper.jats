@@ -1,0 +1,301 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE article PUBLIC "-//NLM//DTD JATS (Z39.96) Journal Publishing DTD v1.2 20190208//EN"
+                  "JATS-publishing1.dtd">
+<article xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:xlink="http://www.w3.org/1999/xlink" dtd-version="1.2" article-type="other">
+<front>
+<journal-meta>
+<journal-id></journal-id>
+<journal-title-group>
+<journal-title>Journal of Open Source Software</journal-title>
+<abbrev-journal-title>JOSS</abbrev-journal-title>
+</journal-title-group>
+<issn publication-format="electronic">2475-9066</issn>
+<publisher>
+<publisher-name>Open Journals</publisher-name>
+</publisher>
+</journal-meta>
+<article-meta>
+<article-id pub-id-type="publisher-id">0</article-id>
+<article-id pub-id-type="doi">N/A</article-id>
+<title-group>
+<article-title>Network Regression Lecture: An Interactive, Offline-First
+Companion for Quantitative Social Scientists</article-title>
+</title-group>
+<contrib-group>
+<contrib contrib-type="author">
+<contrib-id contrib-id-type="orcid">https://orcid.org/0000-0003-1733-2506</contrib-id>
+<name>
+<surname>Vargo</surname>
+<given-names>Chris J.</given-names>
+</name>
+<xref ref-type="aff" rid="aff-1"/>
+</contrib>
+<aff id="aff-1">
+<institution-wrap>
+<institution>Department of Advertising, Public Relations and Media
+Design, University of Colorado Boulder</institution>
+<institution-id institution-id-type="ROR">02ttsq026</institution-id>
+</institution-wrap>
+</aff>
+</contrib-group>
+<pub-date date-type="pub" publication-format="electronic" iso-8601-date="2025-11-25">
+<day>25</day>
+<month>11</month>
+<year>2025</year>
+</pub-date>
+<volume>¿VOL?</volume>
+<issue>¿ISSUE?</issue>
+<fpage>¿PAGE?</fpage>
+<permissions>
+<copyright-statement>Authors of papers retain copyright and release the
+work under a Creative Commons Attribution 4.0 International License (CC
+BY 4.0)</copyright-statement>
+<copyright-year>1970</copyright-year>
+<copyright-holder>The article authors</copyright-holder>
+<license license-type="open-access" xlink:href="https://creativecommons.org/licenses/by/4.0/">
+<license-p>Authors of papers retain copyright and release the work under
+a Creative Commons Attribution 4.0 International License (CC BY
+4.0)</license-p>
+</license>
+</permissions>
+<kwd-group kwd-group-type="author">
+<kwd>network analysis</kwd>
+<kwd>social science</kwd>
+<kwd>pedagogy</kwd>
+<kwd>visualization</kwd>
+<kwd>reproducibility</kwd>
+</kwd-group>
+</article-meta>
+</front>
+<body>
+<sec id="summary">
+  <title>Summary</title>
+  <p>The <bold>Network Regression Lecture</bold> is a single-page,
+  offline-first teaching companion that bundles narrative explanations,
+  research case studies, and browser-based labs for graduate students in
+  quantitative social science. The page opens in any modern browser and
+  can be deployed directly to GitHub Pages, letting instructors
+  distribute a stable URL or downloaded handout without external build
+  steps. Interactive panels let learners explore centrality concepts,
+  compare graph representations, generate canonical network models, and
+  paste their own edge lists for instant visualization and descriptive
+  statistics. Embedded R code (via collapsible toggles) mirrors the
+  on-screen walkthroughs so classroom demonstrations can be reproduced,
+  adapted, or ported into homework and lab assignments. The package is
+  intentionally self-contained: HTML, CSS, JavaScript, and all
+  supporting PDFs and images are stored locally to guarantee long-term
+  accessibility in low-connectivity classrooms.</p>
+</sec>
+<sec id="statement-of-need">
+  <title>Statement of need</title>
+  <p>Methods courses often rely on static slide decks that reference
+  external software environments students have not yet configured. That
+  disconnect is acute in network analysis, where intuition about paths,
+  clustering, and degree distributions usually comes from manipulating
+  visible graphs rather than reading definitions. Existing tutorials
+  frequently assume prior exposure to network packages or provide
+  screenshots instead of live instruments, making it difficult for
+  non-specialists to bridge theory, visualization, and code. The Network
+  Regression Lecture addresses this gap for communication, journalism,
+  and political science cohorts by providing an immediately runnable
+  teaching object: download the repository or open the hosted page, and
+  every concept from node/edge representations to random, small-world,
+  and scale-free models is backed by an explorable widget plus the
+  matching R snippet. The goal is to shorten time-to-practice for
+  first-semester PhD students who are learning regression alongside
+  networks, and to give instructors a turnkey resource that fits into
+  flipped-classroom or lab-heavy formats.</p>
+</sec>
+<sec id="design-and-implementation">
+  <title>Design and implementation</title>
+  <p>The lecture is authored in plain HTML/CSS with lightweight
+  JavaScript to avoid build pipelines. Visualization relies on the
+  <monospace>vis-network</monospace> library loaded from a CDN and local
+  data objects. Four interactive components anchor the pedagogy:</p>
+  <list list-type="bullet">
+    <list-item>
+      <p><bold>Centrality viewer:</bold> Students can toggle degree,
+      betweenness, and closeness scores on a curated agenda-setting
+      network, with optional highlighting of the two most central nodes
+      and an automatically updating leaderboard.</p>
+    </list-item>
+    <list-item>
+      <p><bold>Representation playground:</bold> A fixed toy graph is
+      rendered as an edge list, adjacency matrix, or adjacency list,
+      helping newcomers see how the same structure maps across common
+      storage formats.</p>
+    </list-item>
+    <list-item>
+      <p><bold>Model generator:</bold> Parameterized controls produce
+      Erdos-Renyi, Watts-Strogatz, and Barabasi-Albert style graphs
+      (<xref alt="Barabasi &amp; Albert, 1999" rid="ref-BarabasiAlbert1999" ref-type="bibr">Barabasi
+      &amp; Albert, 1999</xref>;
+      <xref alt="Watts &amp; Strogatz, 1998" rid="ref-WattsStrogatz1998" ref-type="bibr">Watts
+      &amp; Strogatz, 1998</xref>), with live updates of density, path
+      length, and clustering coefficients computed in-browser.</p>
+    </list-item>
+    <list-item>
+      <p><bold>Edge-list scratchpad:</bold> Learners paste CSV-formatted
+      edges (with optional weights) to render a directed graph and
+      inspect degree counts immediately, lowering the barrier to
+      experimenting with their own data.</p>
+    </list-item>
+  </list>
+  <p>Collapsible callouts pair each activity with minimal R/igraph
+  examples so students can transition from the browser to script-based
+  workflows. A helper script
+  (<monospace>deploy_to_github_pages.sh</monospace>) publishes the
+  static site to GitHub Pages in one command, ensuring the same artifact
+  used in class is what students access later.</p>
+</sec>
+<sec id="research-applications">
+  <title>Research applications</title>
+  <p>The lecture curates five agenda-setting case studies drawn from
+  communication research - intermedia networks
+  (<xref alt="Vargo &amp; Guo, 2016" rid="ref-VargoGuo2017JMCQ" ref-type="bibr">Vargo
+  &amp; Guo, 2016</xref>), international news flow
+  (<xref alt="Guo &amp; Vargo, 2017" rid="ref-GuoVargo2017Global" ref-type="bibr">Guo
+  &amp; Vargo, 2017</xref>), message ownership
+  (<xref alt="Guo &amp; Vargo, 2015" rid="ref-GuoVargo2015" ref-type="bibr">Guo
+  &amp; Vargo, 2015</xref>), election issue networks
+  (<xref alt="Vargo et al., 2014" rid="ref-VargoGuoMcCombsShaw2014" ref-type="bibr">Vargo
+  et al., 2014</xref>), and misinformation ecosystems
+  (<xref alt="Vargo et al., 2018" rid="ref-VargoGuoAmazeen2018" ref-type="bibr">Vargo
+  et al., 2018</xref>). Each vignette links to the underlying
+  publication and displays embedded figures or PDFs so students can
+  compare the textbook metrics to peer-reviewed analyses. Instructors
+  can reuse the scratchpad and model generator to prototype replication
+  exercises or extend the examples to new datasets (e.g., platform data
+  collected during current elections). Because all assets ship with the
+  repository, the material remains stable for long-term archiving while
+  still being easy to fork and localize.</p>
+</sec>
+<sec id="acknowledgements">
+  <title>Acknowledgements</title>
+  <p>This project packages classroom materials and published figures
+  from network agenda-setting research by Chris J. Vargo, Lei Guo, and
+  collaborators. The site and examples are released under an open-source
+  license to encourage reuse in teaching and research.</p>
+</sec>
+</body>
+<back>
+<ref-list>
+  <title></title>
+  <ref id="ref-WattsStrogatz1998">
+    <element-citation publication-type="article-journal">
+      <person-group person-group-type="author">
+        <name><surname>Watts</surname><given-names>Duncan J.</given-names></name>
+        <name><surname>Strogatz</surname><given-names>Steven H.</given-names></name>
+      </person-group>
+      <article-title>Collective dynamics of small-world networks</article-title>
+      <source>Nature</source>
+      <year iso-8601-date="1998">1998</year>
+      <volume>393</volume>
+      <issue>6684</issue>
+      <pub-id pub-id-type="doi">10.1038/30918</pub-id>
+      <fpage>440</fpage>
+      <lpage>442</lpage>
+    </element-citation>
+  </ref>
+  <ref id="ref-BarabasiAlbert1999">
+    <element-citation publication-type="article-journal">
+      <person-group person-group-type="author">
+        <name><surname>Barabasi</surname><given-names>Albert-Laszlo</given-names></name>
+        <name><surname>Albert</surname><given-names>Reka</given-names></name>
+      </person-group>
+      <article-title>Emergence of scaling in random networks</article-title>
+      <source>Science</source>
+      <year iso-8601-date="1999">1999</year>
+      <volume>286</volume>
+      <issue>5439</issue>
+      <pub-id pub-id-type="doi">10.1126/science.286.5439.509</pub-id>
+      <fpage>509</fpage>
+      <lpage>512</lpage>
+    </element-citation>
+  </ref>
+  <ref id="ref-VargoGuo2017JMCQ">
+    <element-citation publication-type="article-journal">
+      <person-group person-group-type="author">
+        <name><surname>Vargo</surname><given-names>Chris J.</given-names></name>
+        <name><surname>Guo</surname><given-names>Lei</given-names></name>
+      </person-group>
+      <article-title>Networks, big data, and intermedia agenda setting: An analysis of traditional, partisan, and emerging online u.s. news</article-title>
+      <source>Journalism &amp; Mass Communication Quarterly</source>
+      <year iso-8601-date="2016">2016</year>
+      <volume>94</volume>
+      <issue>4</issue>
+      <pub-id pub-id-type="doi">10.1177/1077699016679976</pub-id>
+      <fpage>1031</fpage>
+      <lpage>1055</lpage>
+    </element-citation>
+  </ref>
+  <ref id="ref-GuoVargo2017Global">
+    <element-citation publication-type="article-journal">
+      <person-group person-group-type="author">
+        <name><surname>Guo</surname><given-names>Lei</given-names></name>
+        <name><surname>Vargo</surname><given-names>Chris J.</given-names></name>
+      </person-group>
+      <article-title>Global intermedia agenda setting: A big data analysis of international news flow</article-title>
+      <source>Journal of Communication</source>
+      <year iso-8601-date="2017">2017</year>
+      <volume>67</volume>
+      <issue>4</issue>
+      <pub-id pub-id-type="doi">10.1111/jcom.12311</pub-id>
+      <fpage>499</fpage>
+      <lpage>520</lpage>
+    </element-citation>
+  </ref>
+  <ref id="ref-GuoVargo2015">
+    <element-citation publication-type="article-journal">
+      <person-group person-group-type="author">
+        <name><surname>Guo</surname><given-names>Lei</given-names></name>
+        <name><surname>Vargo</surname><given-names>Chris</given-names></name>
+      </person-group>
+      <article-title>The power of message networks: A big-data analysis of the network agenda setting model and issue ownership</article-title>
+      <source>Mass Communication and Society</source>
+      <year iso-8601-date="2015">2015</year>
+      <volume>18</volume>
+      <issue>5</issue>
+      <pub-id pub-id-type="doi">10.1080/15205436.2015.1045300</pub-id>
+      <fpage>557</fpage>
+      <lpage>576</lpage>
+    </element-citation>
+  </ref>
+  <ref id="ref-VargoGuoMcCombsShaw2014">
+    <element-citation publication-type="article-journal">
+      <person-group person-group-type="author">
+        <name><surname>Vargo</surname><given-names>Chris J.</given-names></name>
+        <name><surname>Guo</surname><given-names>Lei</given-names></name>
+        <name><surname>McCombs</surname><given-names>Maxwell</given-names></name>
+        <name><surname>Shaw</surname><given-names>Donald L.</given-names></name>
+      </person-group>
+      <article-title>Network issue agendas on twitter during the 2012 u.s. Presidential election</article-title>
+      <source>Journal of Communication</source>
+      <year iso-8601-date="2014">2014</year>
+      <volume>64</volume>
+      <issue>2</issue>
+      <pub-id pub-id-type="doi">10.1111/jcom.12089</pub-id>
+      <fpage>296</fpage>
+      <lpage>316</lpage>
+    </element-citation>
+  </ref>
+  <ref id="ref-VargoGuoAmazeen2018">
+    <element-citation publication-type="article-journal">
+      <person-group person-group-type="author">
+        <name><surname>Vargo</surname><given-names>Chris J.</given-names></name>
+        <name><surname>Guo</surname><given-names>Lei</given-names></name>
+        <name><surname>Amazeen</surname><given-names>Michelle A.</given-names></name>
+      </person-group>
+      <article-title>The agenda-setting power of fake news: A big data analysis of the online media landscape from 2014 to 2016</article-title>
+      <source>New Media and Society</source>
+      <year iso-8601-date="2018">2018</year>
+      <volume>20</volume>
+      <issue>5</issue>
+      <pub-id pub-id-type="doi">10.1177/1461444817712086</pub-id>
+      <fpage>2028</fpage>
+      <lpage>2049</lpage>
+    </element-citation>
+  </ref>
+</ref-list>
+</back>
+</article>

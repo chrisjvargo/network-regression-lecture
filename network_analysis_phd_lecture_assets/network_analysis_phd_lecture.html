@@ -1,0 +1,1034 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Introduction to Network Analysis for Quantitative Social Scientists</title>
+<style>
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    margin: 0;
+    background: #f7f7fb;
+    color: #1d1d26;
+    line-height: 1.6;
+  }
+  #top-nav {
+    position: sticky;
+    top: 0;
+    z-index: 999;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    align-items: center;
+    padding: 0.6rem 1.25rem;
+    background: rgba(20, 24, 43, 0.95);
+    color: #fff;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  }
+  #top-nav .logo {
+    font-weight: 700;
+    letter-spacing: 0.03em;
+  }
+  #top-nav a {
+    color: #f3f3ff;
+    text-decoration: none;
+    padding: 0.3rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.92rem;
+  }
+  #top-nav a:hover {
+    background: rgba(255,255,255,0.15);
+  }
+  main {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 1rem;
+  }
+  section {
+    background: #fff;
+    margin: 1.5rem 0;
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  }
+  section h2 {
+    margin-top: 0;
+    border-bottom: 3px solid #e0e0f0;
+    padding-bottom: 0.5rem;
+  }
+  ul {
+    padding-left: 1.2rem;
+  }
+  figure {
+    margin: 1rem 0;
+    text-align: center;
+  }
+  figure img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+  }
+  figcaption {
+    font-size: 0.85rem;
+    color: #444;
+    margin-top: 0.4rem;
+  }
+  .tip {
+    background: #eef5ff;
+    border-left: 4px solid #4a7bd9;
+    padding: 0.8rem;
+    border-radius: 6px;
+    font-size: 0.95rem;
+  }
+  .image-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: center;
+  }
+  .image-row figure {
+    flex: 1 1 260px;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+    font-size: 0.95rem;
+  }
+  th, td {
+    border: 1px solid #ccd3e0;
+    padding: 0.4rem 0.6rem;
+    text-align: center;
+  }
+  th {
+    background: #f3f5fb;
+    font-weight: 600;
+  }
+  pre {
+    background: #0f172a;
+    color: #f4f4ff;
+    padding: 0.9rem;
+    border-radius: 10px;
+    overflow-x: auto;
+  }
+  code {
+    font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+    font-size: 0.9rem;
+  }
+  .code-toggle {
+    margin: 0.5rem 0;
+    padding: 0.4rem 0.8rem;
+    border: none;
+    border-radius: 4px;
+    background: #4a7bd9;
+    color: #fff;
+    cursor: pointer;
+  }
+  .code-block {
+    display: none;
+  }
+  .code-block.visible {
+    display: block;
+  }
+  .back-to-top {
+    text-align: right;
+    font-size: 0.9rem;
+    margin-top: 1rem;
+  }
+  .back-to-top a {
+    color: #4a7bd9;
+    text-decoration: none;
+  }
+  .model-tabs {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    margin-bottom: 1rem;
+  }
+  .model-tabs button {
+    border: 1px solid #4a7bd9;
+    background: #fff;
+    color: #4a7bd9;
+    padding: 0.4rem 0.8rem;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  .model-tabs button.active {
+    background: #4a7bd9;
+    color: #fff;
+  }
+  .model-panel {
+    display: none;
+  }
+  .model-panel.active {
+    display: block;
+  }
+  .quiz-item {
+    border: 1px solid #d8dff0;
+    padding: 1rem;
+    border-radius: 8px;
+    margin: 1rem 0;
+    background: #fafbff;
+  }
+  .quiz-item button {
+    margin-top: 0.5rem;
+    padding: 0.4rem 0.8rem;
+    border: none;
+    border-radius: 4px;
+    background: #2f7a88;
+    color: #fff;
+    cursor: pointer;
+  }
+  .quiz-answer {
+    display: none;
+    margin-top: 0.5rem;
+    background: #eef9f4;
+    border-left: 4px solid #2f7a88;
+    padding: 0.5rem 0.8rem;
+    border-radius: 4px;
+  }
+  .legend {
+    font-size: 0.85rem;
+    color: #555;
+  }
+  .highlight-text {
+    font-weight: 600;
+    color: #c0392b;
+  }
+  .interactive-note {
+    background: #fffbe6;
+    border-left: 4px solid #f4c542;
+    padding: 0.8rem;
+    border-radius: 6px;
+  }
+  .table-scroll {
+    overflow-x: auto;
+  }
+  @media (max-width: 768px) {
+    #top-nav {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    nav a {
+      font-size: 0.85rem;
+    }
+  }
+</style>
+<script src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
+</head>
+<body>
+<nav id="top-nav">
+  <div class="logo">Network Analysis Lecture</div>
+  <a href="#title-overview">Overview</a>
+  <a href="#why-networks">Why Networks?</a>
+  <a href="#building-blocks">Building Blocks</a>
+  <a href="#representing-networks">Representation</a>
+  <a href="#global-structure">Global Structure</a>
+  <a href="#centrality">Centrality</a>
+  <a href="#patterns-models">Patterns &amp; Models</a>
+  <a href="#communities">Communities</a>
+  <a href="#applied-example">Applied Example</a>
+  <a href="#networks-regression">Networks &amp; Regression</a>
+  <a href="#pitfalls">Pitfalls</a>
+  <a href="#check-understanding">Check Yourself</a>
+  <a href="#further-reading">Further Reading</a>
+</nav>
+<main>
+  <section id="title-overview">
+    <h1>Introduction to Network Analysis for Quantitative Social Scientists</h1>
+    <h3>PhD Quantitative Methods Session &mdash; 2-hour lecture</h3>
+    <p>This lecture bridges familiar regression intuition with network thinking so first-semester doctoral students can reason about structure, write code, and contextualize network measures as variables in broader quantitative models.</p>
+    <ul>
+      <li>Describe what nodes, edges, and network datasets represent across communication, political, and marketing contexts.</li>
+      <li>Interpret descriptive properties (degree, paths, density, clustering) on both toy and classic graphs.</li>
+      <li>Contrast major centrality measures and explain when each best captures influence or brokerage.</li>
+      <li>Recognize canonical network patterns (random, small-world, scale-free, communities) and their implications for empirical work.</li>
+      <li>Connect network features to regression-style modeling and practical projects like mention and semantic networks.</li>
+    </ul>
+    <figure>
+      <img src="https://upload.wikimedia.org/wikipedia/commons/4/47/Diagram_of_a_social_network.jpg" alt="Illustrative social network diagram with labeled ties">
+      <figcaption>Image: Diagram of a Social Network, Wikimedia Commons, CC BY-SA 3.0.</figcaption>
+    </figure>
+    <div class="tip">
+      <strong>How to use this page:</strong> Scroll from top to bottom or jump via the sticky navigation. Each major concept is paired with visuals, intuitive text, R code you can reveal when ready, and at least one interactive element. Copy the R code snippets into RStudio/Posit when you have internet access to install packages. The JavaScript visualizations run in any modern browser.</div>
+  </section>
+
+  <section id="why-networks">
+    <h2>Why Networks? Motivation for Quant Methods</h2>
+    <p>Networks are everywhere in social science: friends in a cohort, journalists citing sources, influencers mentioning brands, legislators cosponsoring bills, words co-occurring within tweets, or research teams coauthoring across institutions. Each example involves <em>entities</em> and <em>ties</em> that carry information beyond independent rows of a data frame.</p>
+    <p>When we assume rows are independent, we risk averaging away contagion, peer effects, or structural constraints. Modeling the ties directly preserves who can reach whom, which brokers sit across factions, and which ideas travel quickly or slowly. That perspective lets us connect back to regression thinking: network measures become predictors or outcomes that summarize how embedded each node is.</p>
+    <p><em>Dr. Vargo&apos;s own work</em> illustrates these stakes clearly. His MSDS Marketing Text Analytics course builds multi-layer <strong>mention networks</strong> from @ATT, @TMobile, and @verizon Twitter archives and <strong>semantic networks</strong> that track which issues co-occur in brand conversations. His political communication collaborations (e.g., Network Agenda Setting) create <strong>issue-pair networks</strong> linking how campaigns, news outlets, and citizens couple topics like economy&ndash;jobs or healthcare&ndash;costs. We will draw on these same scenarios throughout the lecture so the concepts remain grounded in real research assets.</p>
+    <div class="image-row">
+      <figure>
+        <img src="https://upload.wikimedia.org/wikipedia/commons/2/25/Social_network_diagram.svg" alt="Simple social network diagram with nodes and ties">
+        <figcaption>Image: Social Network Diagram, Wikimedia Commons, CC BY-SA 3.0.</figcaption>
+      </figure>
+      <figure>
+        <img src="https://upload.wikimedia.org/wikipedia/commons/a/a0/Social_network-gu.svg" alt="Colorful network representing online contacts">
+        <figcaption>Image: Network of Contacts, Wikimedia Commons, CC BY-SA 3.0.</figcaption>
+      </figure>
+      <figure>
+        <img src="https://upload.wikimedia.org/wikipedia/commons/a/a6/Social_network_as_graph.svg" alt="Graph representation of individuals and relationships">
+        <figcaption>Image: Social Network as Graph, Wikimedia Commons, CC0.</figcaption>
+      </figure>
+    </div>
+    <p><strong>Treating ties as independent observations:</strong> Imagine stacking every mention on social media as a row, ignoring who mentioned whom. You could model counts, but you lose the possibility that a single influential user mentions multiple brands and redirects attention.
+      <br>
+      <strong>Respecting network structure:</strong> Build a mention network, summarize each user&apos;s degree, betweenness, or community membership, and relate those structural positions to campaign outcomes. Dependencies remain explicit, so you can discuss clustering, contagion, and sampling boundaries.</p>
+    <p><strong>Meta scan of the advertising literature:</strong> Dr. Vargo&apos;s <em>Social Media Network Analysis</em> project (<code>network_analysis_phd_lecture_assets/assets/social_media_network_analysis/JIAD_SocialNetworkCites.docx</code>) used citation, co-citation, and network analysis on more than 100,000 co-citations covering 289 journals. The bibliometric clusters—word-of-mouth/diffusion, uses and gratifications, networks/networking, marketing/advertising/promotion, and methodology/statistics—show how deeply network reasoning already anchors strategic communication scholarship. The analysis also highlighted Journal of Advertising Research, Journal of Interactive Advertising, Journal of Interactive Marketing, and Public Relations Review as recurring hubs, reinforcing why network measures and visualization literacy matter for PhD students heading into advertising-focused research careers.</p>
+    <p>As an instructor, pause here and invite students to name a network they have implicitly analyzed in prior projects (e.g., citing authors, board memberships, or semantic co-occurrences). This primes them to see networks not as exotic math but as structured data frames.</p>
+    <div class="back-to-top"><a href="#top-nav">Back to top</a></div>
+  </section>
+
+  <section id="building-blocks">
+    <h2>Network Building Blocks: Nodes, Edges, and Types of Networks</h2>
+    <ul>
+      <li><strong>Nodes (vertices):</strong> Actors, organizations, words, posts, or any discrete entity. Ego networks center on one node and its immediate ties; whole networks include all nodes in the defined boundary.</li>
+      <li><strong>Edges (links):</strong> The relationships (friendship, mention, co-attendance, co-word). They can be directed (A mentions B) or undirected (A and B co-occur), weighted (counts, strengths), or signed (positive vs negative sentiment).</li>
+      <li><strong>Adjacency:</strong> Nodes are adjacent if they share an edge. Adjacency lists enumerate neighbors of each node; adjacency matrices store ties as 0/1 (or weights) in a square array.</li>
+      <li><strong>One-mode vs two-mode:</strong> One-mode networks connect entities of the same type (journalist-to-journalist). Two-mode (bipartite) networks connect different types (journalists-to-topics). Projecting a two-mode network onto one mode (e.g., topics connected if they appear in the same press release) is common in semantic and agenda-setting research.</li>
+    </ul>
+    <p><em>Toy example:</em> Consider five graduate students attending three workshops. A two-mode people&ndash;event network links each student to attended workshops. Projecting into a one-mode student network reveals who likely interacts outside class.</p>
+    <figure>
+      <img src="https://upload.wikimedia.org/wikipedia/commons/a/a6/Social_network_as_graph.svg" alt="Toy social network graph illustration">
+      <figcaption>Image: Social Network as Graph (toy example inspiration), Wikimedia Commons, CC0.</figcaption>
+    </figure>
+    <p>The R snippet below builds a directed mention-style toy network, prints both adjacency matrix and edge list, and plots the result. Toggle it when you are ready to walk through the syntax.</p>
+    <button class="code-toggle" onclick="toggleCode('code-toy')">Show / Hide Toy Network R Code</button>
+    <div id="code-toy" class="code-block">
+      <pre><code class="language-r">library(igraph)
+
+people &lt;- data.frame(name = c("Alice", "Ben", "Carmen", "Diego", "Ella"))
+ties &lt;- data.frame(
+  from = c("Alice", "Alice", "Ben", "Carmen", "Diego", "Ella"),
+  to   = c("Ben", "Carmen", "Diego", "Diego", "Ella", "Alice"),
+  weight = c(2, 1, 1, 3, 1, 2)
+)
+
+g &lt;- graph_from_data_frame(ties, vertices = people, directed = TRUE)
+
+adj_matrix &lt;- as.matrix(as_adjacency_matrix(g, attr = "weight"))
+adj_matrix  # weighted adjacency matrix
+
+ties        # edge list representation
+
+plot(
+  g,
+  edge.width = E(g)$weight,
+  edge.arrow.size = 0.35,
+  vertex.color = "lightsteelblue",
+  vertex.size = 28,
+  vertex.label.color = "black",
+  main = "Toy mention network"
+)</code></pre>
+    </div>
+    <div class="back-to-top"><a href="#top-nav">Back to top</a></div>
+  </section>
+
+  <section id="representing-networks">
+    <h2>Representing Networks Mathematically</h2>
+    <p><strong>Adjacency matrix:</strong> Square matrix where entry <em>a<sub>ij</sub></em> equals 1 (or a weight) if there is a tie from node i to node j. Symmetric for undirected networks.</p>
+    <p><strong>Adjacency list:</strong> For each node, record its neighbors (useful for sparse graphs). For example, <code>A: {B, C}</code>, <code>B: {C}</code>.</p>
+    <p><strong>Edge list / long format:</strong> Data frame with columns such as <code>from</code>, <code>to</code>, <code>weight</code>, and optional time or attributes. This is how most CSV exports store networks for Gephi, igraph, or NetworkX.</p>
+    <div class="table-scroll">
+      <table>
+        <caption>Mini example: news organizations quoting campaigns and voters</caption>
+        <thead>
+          <tr><th colspan="3">Edge list</th><th colspan="3">Adjacency matrix (undirected)</th></tr>
+          <tr>
+            <th>From</th><th>To</th><th>Weight</th>
+            <th></th><th>Campaigns</th><th>Voters</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Journalists</td><td>Campaigns</td><td>2</td><td>Journalists</td><td>2</td><td>1</td></tr>
+          <tr><td>Journalists</td><td>Voters</td><td>1</td><td>Campaigns</td><td>2</td><td>1</td></tr>
+          <tr><td>Campaigns</td><td>Voters</td><td>3</td><td>Voters</td><td>1</td><td>3</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>The code below demonstrates both <code>graph_from_adjacency_matrix()</code> and <code>graph_from_data_frame()</code>. This mirrors how mention/semantic pipelines from Dr. Vargo&apos;s repositories export Gephi-ready CSVs.</p>
+    <pre><code class="language-r">library(igraph)
+
+adj &lt;- matrix(
+  c(0, 1, 1,
+    1, 0, 1,
+    1, 1, 0),
+  nrow = 3,
+  byrow = TRUE,
+  dimnames = list(c("Journalists", "Campaigns", "Voters"),
+                  c("Journalists", "Campaigns", "Voters"))
+)
+media_graph &lt;- graph_from_adjacency_matrix(adj, mode = "undirected")
+
+edge_frame &lt;- data.frame(
+  from = c("Journalists", "Journalists", "Campaigns"),
+  to   = c("Campaigns", "Voters", "Voters"),
+  weight = c(2, 1, 3)
+)
+media_graph_df &lt;- graph_from_data_frame(edge_frame, directed = FALSE)
+
+media_graph
+summary(media_graph_df)</code></pre>
+    <div class="back-to-top"><a href="#top-nav">Back to top</a></div>
+  </section>
+
+  <section id="global-structure">
+    <h2>Describing Networks: Global Structure</h2>
+    <p>Descriptive measures help us compare networks before fitting sophisticated models:</p>
+    <ul>
+      <li><strong>Degree (k):</strong> Number of ties incident to a node (separate in/out for directed graphs). Degree distribution shows how popularity spreads. Formula: <em>k<sub>i</sub> = ∑<sub>j</sub> a<sub>ij</sub></em>.</li>
+      <li><strong>Paths and geodesic distance:</strong> A path is a sequence of edges connecting nodes; the geodesic distance between nodes is the length of the shortest path. Network diameter is the longest geodesic.</li>
+      <li><strong>Components:</strong> Maximal sets of nodes mutually reachable. A disconnected node sits in its own component.</li>
+      <li><strong>Density:</strong> Proportion of realized edges out of all possible edges (for undirected networks: 2m / (n(n−1))).</li>
+      <li><strong>Clustering coefficient:</strong> Probability that two neighbors of a node are connected (local) or average triadic closure (global). Indicates transitivity.</li>
+    </ul>
+    <figure>
+      <img src="https://upload.wikimedia.org/wikipedia/commons/3/39/Complex_network_degree_distribution_of_random_and_scale-free.png" alt="Comparison between random and scale-free degree distributions">
+      <figcaption>Image: Degree distributions (random vs. scale-free), Wikimedia Commons, GNU FDL.</figcaption>
+    </figure>
+    <p>The Zachary Karate Club network (34 members) is a canonical example for measuring these properties.</p>
+    <button class="code-toggle" onclick="toggleCode('code-structure')">Show / Hide R Code: Global Descriptors</button>
+    <div id="code-structure" class="code-block">
+      <pre><code class="language-r">library(igraph)
+
+g &lt;- make_graph("Zachary")
+
+karate_degree &lt;- degree(g)
+summary(karate_degree)
+
+hist(karate_degree,
+     breaks = 10,
+     col = "#6baed6",
+     main = "Degree distribution: Karate Club",
+     xlab = "Degree")
+
+g_density &lt;- edge_density(g)
+karate_clustering &lt;- transitivity(g, type = "global")
+cat("Density:", round(g_density, 3),"\n")
+cat("Global clustering coefficient:", round(karate_clustering, 3),"\n")</code></pre>
+    </div>
+    <div class="back-to-top"><a href="#top-nav">Back to top</a></div>
+  </section>
+
+  <section id="centrality">
+    <h2>Centrality: Who or What is Important in a Network?</h2>
+    <p>Centrality measures capture different ideas of importance:</p>
+    <ul>
+      <li><strong>Degree centrality:</strong> Popularity or activity; nodes with many ties can broadcast widely.</li>
+      <li><strong>Betweenness centrality:</strong> Brokerage; nodes on many shortest paths can broker information. Think of communication strategists connecting departments.</li>
+      <li><strong>Closeness centrality:</strong> How near a node is, on average, to others. Useful for diffusion speed intuition.</li>
+      <li><strong>Eigenvector centrality:</strong> Influence that rewards being connected to other influential nodes (prestige).</li>
+      <li><strong>PageRank:</strong> Like eigenvector, but damped random walk originally for web pages; handles directed networks and sinks gracefully.</li>
+    </ul>
+    <p>This mirrors Dr. Vargo&apos;s carrier mention networks, where degree pinpoints super-fans (e.g., @denvermom talking to every carrier), betweenness identifies policy hubs (e.g., @techpolicyhub bridging infrastructure and customer care), and PageRank highlights which verified handles hold sustained attention even if they post infrequently.</p>
+    <figure>
+      <img src="https://upload.wikimedia.org/wikipedia/commons/0/0d/Social_Network_Model_of_Relationships_in_the_Karate_Club.png" alt="Karate Club network visualization">
+      <figcaption>Image: Karate Club Network, Wikimedia Commons, CC BY-SA 3.0.</figcaption>
+    </figure>
+    <p>The snippet below reproduces Dr. Vargo's Social Media Network Analysis co-citation network (files gathered under <code>network_analysis_phd_lecture_assets/assets/social_media_network_analysis/</code>). Instead of contrived graphs, this reads the actual <code>2modecociteedgelist.xlsx</code> edgelist and computes centralities for the busiest articles and citations.</p>
+    <pre><code class="language-r">library(readxl)
+library(dplyr)
+library(igraph)
+
+base_path &lt;- "network_analysis_phd_lecture_assets/assets/social_media_network_analysis"
+edges &lt;- read_excel(file.path(base_path, "2modecociteedgelist.xlsx"))
+lookup &lt;- read_excel(file.path(base_path, "lookup.xlsx"))
+
+top_articles &lt;- edges %&gt;%
+  count(`Article ID`, sort = TRUE) %&gt;%
+  slice_head(n = 8)
+
+focus_edges &lt;- edges %&gt;%
+  semi_join(top_articles, by = "Article ID") %&gt;%
+  mutate(Article = paste0("Article_", `Article ID`),
+         Citation = paste0("Citation_", NewCiteID))
+
+co_graph &lt;- graph_from_data_frame(focus_edges[, c("Article", "Citation")],
+                                  directed = FALSE)
+
+V(co_graph)$type &lt;- ifelse(grepl("^Article", V(co_graph)$name),
+                           "Article", "Citation")
+centrality_tbl &lt;- tibble(
+  node = V(co_graph)$name,
+  type = V(co_graph)$type,
+  degree = degree(co_graph),
+  betweenness = betweenness(co_graph),
+  closeness = closeness(co_graph)
+)
+
+centrality_tbl %&gt;%
+  arrange(desc(degree)) %&gt;%
+  slice_head(n = 12)
+
+plot(
+  co_graph,
+  vertex.size = scales::rescale(degree(co_graph), to = c(10, 40)),
+  vertex.color = ifelse(V(co_graph)$type == "Article", "#ff9f1c", "#118ab2"),
+  vertex.label = NA,
+  main = "Strategic communication co-citation network (Vargo archive)"
+)</code></pre>
+    <p class="interactive-note">Interactive exploration below uses the same co-citation data. Color encodes citation cluster (word of mouth, uses &amp; gratifications, networks, marketing, or methodology) and node size reflects degree. Hover to see full citation strings plus betweenness/closeness metrics from the actual dataset.</p>
+    <div id="centrality-vis" style="height: 420px; border: 1px solid #dfe3f6; border-radius: 8px; background: #fff;"></div>
+    <p class="legend">The JSON network represents a simplified mention network (inspired by Dr. Vargo&apos;s brand listening datasets). Degree centrality from the R table aligns with node size here, while betweenness helps explain why certain connectors appear darker.</p>
+    <div class="back-to-top"><a href="#top-nav">Back to top</a></div>
+  </section>
+
+  <section id="patterns-models">
+    <h2>Network Patterns and Models: Random, Small-world, Scale-free</h2>
+    <p>Recognizing structural patterns helps you choose appropriate null models and theoretical frames. Dr. Vargo&apos;s brand dashboards regularly compare observed graphs to baseline simulations to argue whether a carrier conversation is unusually clustered (small-world) or dominated by a handful of hubs (scale-free).</p>
+    <ul>
+      <li><strong>Erdős&ndash;Rényi random graphs:</strong> Each possible edge is present with probability <em>p</em>. Degrees follow a binomial/Poisson-like distribution. Good baseline for testing whether observed clustering or hubs are surprising.</li>
+      <li><strong>Small-world networks:</strong> High clustering like a lattice but short average path length due to a few long ties. Useful for modeling information spread in local communities with occasional jumps.</li>
+      <li><strong>Scale-free networks:</strong> Heavy-tailed degree distributions with hubs produced via preferential attachment (the "rich get richer"). Social media follower graphs and semantic networks of popular topics often look scale-free.</li>
+    </ul>
+    <div class="model-tabs">
+      <button id="tab-random" class="active" onclick="showModel('random')">Random</button>
+      <button id="tab-smallworld" onclick="showModel('smallworld')">Small-world</button>
+      <button id="tab-scalefree" onclick="showModel('scalefree')">Scale-free</button>
+    </div>
+    <div id="random" class="model-panel active">
+      <figure>
+        <img src="https://upload.wikimedia.org/wikipedia/commons/9/9b/Social_Network_Analysis_Visualization.png" alt="Large random network visualization">
+        <figcaption>Image: Social Network Analysis Visualization (random-looking network), Wikimedia Commons, CC BY 2.0.</figcaption>
+      </figure>
+      <p>Edges appear scattered without obvious hubs. Degree distribution is narrow, so most nodes look similar.</p>
+    </div>
+    <div id="smallworld" class="model-panel">
+      <figure>
+        <img src="https://upload.wikimedia.org/wikipedia/commons/3/37/Small-world-network-example.png" alt="Small world network illustration">
+        <figcaption>Image: Small-world Network Example, Wikimedia Commons, CC BY-SA 3.0.</figcaption>
+      </figure>
+      <p>Notice clustered neighborhoods plus a few shortcuts. Communication cascades can traverse quickly despite local clustering.</p>
+    </div>
+    <div id="scalefree" class="model-panel">
+      <figure>
+        <img src="https://upload.wikimedia.org/wikipedia/commons/c/c6/Scale-free_network_sample.svg" alt="Scale free network sample">
+        <figcaption>Image: Scale-free Network Sample, Wikimedia Commons, CC BY-SA 3.0.</figcaption>
+      </figure>
+      <p>A few hubs dominate (think mega-influencers or viral issues). Degree distributions follow a power-law, as shown earlier.</p>
+    </div>
+    <div class="image-row">
+      <figure>
+        <img src="https://upload.wikimedia.org/wikipedia/commons/archive/2/25/20110710013021%21DegreeDistributions.PNG" alt="Random vs scale-free degree distributions">
+        <figcaption>Image: Degree Distributions (random vs. scale-free), Wikimedia Commons, CC BY-SA 3.0.</figcaption>
+      </figure>
+    </div>
+    <p>The R code compares three simulated graphs. Encourage students to tweak <code>n</code> or parameters to see when patterns blur.</p>
+    <pre><code class="language-r">library(igraph)
+set.seed(123)
+
+random_g &lt;- sample_gnp(n = 40, p = 0.08)
+smallworld_g &lt;- sample_smallworld(dim = 1, size = 40, nei = 2, p = 0.05)
+scalefree_g &lt;- sample_pa(n = 40, power = 1)
+
+par(mfrow = c(1,3))
+plot(random_g, main = "Erdős–Rényi", vertex.size = 6, vertex.label = NA)
+plot(smallworld_g, main = "Small-world", vertex.size = 6, vertex.label = NA)
+plot(scalefree_g, main = "Scale-free", vertex.size = 6, vertex.label = NA)
+par(mfrow = c(1,1))</code></pre>
+    <div class="back-to-top"><a href="#top-nav">Back to top</a></div>
+  </section>
+
+  <section id="communities">
+    <h2>Communities and Clustering</h2>
+    <p><strong>Communities</strong> (modules) are groups of nodes more densely connected internally than externally. Detecting them reveals factions, issue blocs, or audiences.</p>
+    <p><strong>Modularity (Q):</strong> Measures how well a partition separates dense groups. Optimizing modularity (e.g., Louvain algorithm) is a common approach.</p>
+    <p>The Karate Club split famously aligned with two instructors, illustrating how structural fractures can predict real-world outcomes—just as Dr. Vargo&apos;s mention dashboards expose clusters of privacy advocates versus product promoters within telecom conversations.</p>
+    <pre><code class="language-r">library(igraph)
+
+g &lt;- make_graph("Zachary")
+
+comm &lt;- cluster_louvain(g)
+modularity(comm)
+
+plot(
+  comm,
+  g,
+  vertex.size = 12,
+  main = "Karate Club communities via Louvain"
+)
+
+table(membership(comm))</code></pre>
+    <p class="interactive-note">Interactive exploration: click a community label to highlight its members (adapted from Dr. Vargo&apos;s mention-network demos where brand clusters are color-coded).</p>
+    <div style="display:flex; gap:1rem; flex-wrap:wrap; align-items:center;">
+      <div>
+        <button class="code-toggle" onclick="highlightCommunity('all')">Show all nodes</button>
+        <button class="code-toggle" onclick="highlightCommunity('blue')">Community Blue</button>
+        <button class="code-toggle" onclick="highlightCommunity('gold')">Community Gold</button>
+        <button class="code-toggle" onclick="highlightCommunity('teal')">Community Teal</button>
+      </div>
+      <div id="community-vis" style="flex:1 1 420px; min-height:420px; border:1px solid #dfe3f6; border-radius:8px; background:#fff;"></div>
+    </div>
+    <p class="legend">Communities correspond to topical groupings (e.g., privacy advocates vs. product marketers vs. civic groups) when you build mention or semantic networks from real social listening datasets.</p>
+    <div class="back-to-top"><a href="#top-nav">Back to top</a></div>
+  </section>
+
+  <section id="applied-example">
+    <h2>Applied Example: Text-based Mention and Semantic Networks</h2>
+    <p>Inspired by the brand social listening and political agenda-setting projects in <em>result.md</em>, this section contrasts a tiny Twitter mention network with a semantic co-occurrence network. Both can feed network agenda-setting (NAS) analyses or influencer targeting.</p>
+    <h3>Toy Twitter mention network (users → brands)</h3>
+    <div class="table-scroll">
+      <table>
+        <thead><tr><th>From User</th><th>To Account</th><th>Mentions</th></tr></thead>
+        <tbody>
+          <tr><td>@civicscholar</td><td>@MetroTransit</td><td>3</td></tr>
+          <tr><td>@civicscholar</td><td>@CityCoffee</td><td>1</td></tr>
+          <tr><td>@wellnessnerd</td><td>@CityCoffee</td><td>4</td></tr>
+          <tr><td>@policywonk</td><td>@MetroTransit</td><td>2</td></tr>
+          <tr><td>@policywonk</td><td>@BikeCollective</td><td>1</td></tr>
+          <tr><td>@urbanyogi</td><td>@BikeCollective</td><td>2</td></tr>
+          <tr><td>@urbanyogi</td><td>@CityCoffee</td><td>1</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <h3>Toy semantic network (issue co-occurrences)</h3>
+    <div class="table-scroll">
+      <table>
+        <thead><tr><th>Word A</th><th>Word B</th><th>Co-occurrence Count</th></tr></thead>
+        <tbody>
+          <tr><td>economy</td><td>jobs</td><td>12</td></tr>
+          <tr><td>economy</td><td>inflation</td><td>9</td></tr>
+          <tr><td>healthcare</td><td>costs</td><td>11</td></tr>
+          <tr><td>climate</td><td>energy</td><td>8</td></tr>
+          <tr><td>education</td><td>access</td><td>6</td></tr>
+          <tr><td>education</td><td>jobs</td><td>3</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>R code: read the toy edge lists directly from in-document CSV strings, build igraph objects, compute centrality, and plot user vs. word networks.</p>
+    <pre><code class="language-r">library(igraph)
+
+mention_csv &lt;- "from,to,weight\n@civicscholar,@MetroTransit,3\n@civicscholar,@CityCoffee,1\n@wellnessnerd,@CityCoffee,4\n@policywonk,@MetroTransit,2\n@policywonk,@BikeCollective,1\n@urbanyogi,@BikeCollective,2\n@urbanyogi,@CityCoffee,1"
+mention_edges &lt;- read.csv(text = mention_csv)
+mention_g &lt;- graph_from_data_frame(mention_edges, directed = TRUE)
+
+degree_cent &lt;- degree(mention_g, mode = "out")
+bet_cent &lt;- betweenness(mention_g, directed = TRUE)
+
+plot(
+  mention_g,
+  vertex.size = scales::rescale(degree_cent, to = c(15, 40)),
+  vertex.color = ifelse(grepl("@", V(mention_g)$name), "#ffd166", "#06d6a0"),
+  edge.width = mention_edges$weight,
+  main = "Toy mention network"
+)
+
+semantic_csv &lt;- "word_a,word_b,count\neconomy,jobs,12\neconomy,inflation,9\nhealthcare,costs,11\nclimate,energy,8\neducation,access,6\neducation,jobs,3"
+semantic_edges &lt;- read.csv(text = semantic_csv)
+semantic_g &lt;- graph_from_data_frame(semantic_edges, directed = FALSE)
+
+semantic_between &lt;- betweenness(semantic_g)
+semantic_degree &lt;- degree(semantic_g)
+
+plot(
+  semantic_g,
+  vertex.size = scales::rescale(semantic_between, to = c(14, 36)),
+  vertex.color = "#118ab2",
+  edge.width = semantic_edges$count/2,
+  main = "Toy semantic co-occurrence network"
+)
+</code></pre>
+    <h3>Spotlight: Carrier Mention Network (AT&amp;T, T-Mobile, Verizon)</h3>
+    <p>Inside <code>MSDS_marketing_text_analytics/master_files/3_topic_unsupervised_ml/notebooks/5_mention_network_2025.ipynb</code>, Dr. Vargo orchestrates three layers of networks derived from @ATT, @TMobile, and @verizon Twitter archives. The cleaned edge lists feed Gephi, igraph, and Plotly dashboards that let students diagnose brand conversations, influencer brokerage, and cross-brand spillovers.</p>
+    <div class="table-scroll">
+      <table>
+        <thead><tr><th>Layer</th><th>Nodes</th><th>Edge meaning</th><th>Example from dataset</th></tr></thead>
+        <tbody>
+          <tr><td>User &rarr; Brand</td><td>Consumer or media handles + official brand accounts</td><td>Directed mention with weight = mention count</td><td>@denvermom &rarr; @ATT, weight = 4</td></tr>
+          <tr><td>User &rarr; User</td><td>Verified + fan handles</td><td>Replies or mutual mentions capturing conversations</td><td>@techpolicyhub &harr; @5Gwatch</td></tr>
+          <tr><td>Brand &rarr; Brand</td><td>Carrier accounts</td><td>Shared audience or co-mention intensity</td><td>@ATT &rarr; @TMobile (co-mention in user timelines)</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <button class="code-toggle" onclick="toggleCode('code-carrier')">Show / Hide R Code: Rebuilding Carrier Mention Edges</button>
+    <div id="code-carrier" class="code-block">
+      <pre><code class="language-r">library(jsonlite)
+library(dplyr)
+library(purrr)
+library(tidyr)
+library(igraph)
+
+carrier_zips &lt;- file.path(
+  "MSDS_marketing_text_analytics/master_files/3_topic_unsupervised_ml/notebooks/data",
+  c("@ATT.zip", "@TMobile.zip", "@verizon.zip")
+)
+
+read_mentions &lt;- function(zip_path) {
+  json_stream &lt;- unz(zip_path, "tweets.json")    # file name used in the Colab notebook
+  tweets &lt;- stream_in(json_stream, verbose = FALSE)
+  tweets %&gt;%
+    select(user = user$screen_name, mentions = entities$user_mentions) %&gt;%
+    unnest_longer(mentions) %&gt;%
+    filter(!is.na(mentions$screen_name)) %&gt;%
+    count(user, brand = mentions$screen_name, name = "weight")
+}
+
+carrier_edges &lt;- map_dfr(carrier_zips, read_mentions)
+
+brand_g &lt;- graph_from_data_frame(carrier_edges, directed = TRUE)
+page_rank(brand_g)$vector[1:10]  # inspect top influencers
+</code></pre>
+    </div>
+    <p>The resulting network mirrors the multi-layer plots showcased in Dr. Vargo&apos;s lecture deck: AT&amp;T-support channels form one community, while urban lifestyle advocates bridge to T-Mobile and Verizon conversations. Observing which user clusters mention multiple carriers helps explain cross-brand agenda-setting.</p>
+    <h3>Spotlight: Political Topic Co-occurrence &amp; Network Agenda Setting</h3>
+    <p>The workflow in <code>2025_trace_data/political_advertising_project_bridget/create_network_graph.ipynb</code> operationalizes Network Agenda Setting theory (Guo &amp; Vargo 2015). Classified political ads or tweets are grouped by case ID and party, then converted into topic-pair edges to reveal how coalitions talk about linked issues.</p>
+    <div class="table-scroll">
+      <table>
+        <thead><tr><th>Source</th><th>Nodes</th><th>Edge definition</th><th>Illustrative NAS pairing</th></tr></thead>
+        <tbody>
+          <tr><td>Ads coded as Democratic</td><td>Issues like economy, healthcare, climate</td><td>Co-occurrence within the same message</td><td>Economy &ndash; Jobs (job creation frame)</td></tr>
+          <tr><td>Ads coded as Republican</td><td>Issues like security, taxation, immigration</td><td>Co-occurrence counts per party</td><td>Immigration &ndash; Security</td></tr>
+          <tr><td>2012 NAS Twitter corpus</td><td>News media / campaigns / public issues</td><td>Edges weighted by joint mentions across actor groups</td><td>Healthcare &ndash; Costs (issue ownership debate)</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <pre><code class="language-r">library(readr)
+library(igraph)
+
+edge_path &lt;- "network_analysis_phd_lecture_assets/assets/political_advertising_project/edge_list_by_party.csv"
+topic_edges &lt;- read_csv(edge_path)
+
+nas_graph &lt;- graph_from_data_frame(topic_edges, directed = FALSE)
+nas_comm &lt;- cluster_walktrap(nas_graph)
+
+plot(nas_comm, nas_graph,
+     vertex.color = membership(nas_comm),
+     main = "Network agenda-setting communities by party")
+</code></pre>
+    <p>Discuss how the NAS network differentiates coalitions: a healthcare&ndash;costs module captures consumer-focused narratives, while an energy&ndash;jobs triad showcases growth frames. Students can export comparable edge lists from their own text-classification projects and test whether party-specific communities align with theory.</p>
+    <h3>Case Study: Strategic Communication Co-citation Network (Dr. Vargo&apos;s Meta-analysis)</h3>
+    <p>When Dr. Vargo drafted <em>“Social Network Sites and Social Media: A New Research Paradigm for Strategic Communication?”</em> he wanted to settle a hallway debate from his AAA 2013 plenary: were advertising/PR scholars inventing a new paradigm or remixing the same citations? Borrowing from Kuhn’s paradigm logic, he argued that if a new paradigm exists it should be visible in the co-citation structure. So he exported references from 289 journals, deduplicated more than 100,000 co-citations, and used network analysis to let the canon speak for itself.</p>
+    <p>The result was a story he could tell to skeptical CMOs and doctoral cohorts alike: diffusion and word-of-mouth theory (teal) dominate one side of the map, marketing/advertising exemplars sit opposite, and methodological pieces plus uses-and-grats work stitch them together. He often jokes about spending late nights cleaning <code>2modecociteedgelist.xlsx</code> just so an executive audience could see that strategic communication literally lives in the edges between disciplines.</p>
+    <p>The PDF below (<code>network_analysis_phd_lecture_assets/assets/social_media_network_analysis/ForceAtlas2_Topic_Clustering.pdf</code>) is the raw ForceAtlas2 export he walked into that plenary with—no redesigns.</p>
+    <figure>
+      <object data="network_analysis_phd_lecture_assets/assets/social_media_network_analysis/ForceAtlas2_Topic_Clustering.pdf" type="application/pdf" width="100%" height="600">
+        <p>Your browser cannot display the embedded PDF. Open <code>network_analysis_phd_lecture_assets/assets/social_media_network_analysis/ForceAtlas2_Topic_Clustering.pdf</code> directly.</p>
+      </object>
+      <figcaption>Actual network export used in the paper; colors show the five strategic-communication clusters.</figcaption>
+    </figure>
+    <div class="table-scroll">
+      <table>
+        <thead><tr><th>Representative citation</th><th>Cluster (lookup.xlsx)</th><th>Degree (subset)</th></tr></thead>
+        <tbody>
+          <tr><td><em>Electronic word-of-mouth via consumer opinion platforms...</em></td><td>Word of Mouth &amp; Diffusion</td><td>4</td></tr>
+          <tr><td><em>Marketing in hypermedia computer mediated environments...</em></td><td>Word of Mouth &amp; Diffusion</td><td>2</td></tr>
+          <tr><td><em>How word-of-mouth advertising works</em></td><td>Marketing &amp; Advertising</td><td>2</td></tr>
+          <tr><td><em>A social influence model of consumer participation...</em></td><td>Networks &amp; Networking</td><td>2</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <h3>Network Agenda Setting on Twitter (Guo &amp; Vargo, 2015)</h3>
+    <p>Dr. Vargo&apos;s collaboration with Lei Guo—<em>The Power of Message Networks: A Big-Data Analysis of the Network Agenda Setting Model and Issue Ownership</em> (<code>network_analysis_phd_lecture_assets/assets/guo_vargo_2015/Guo_Vargo_2015_Power_of_Message_Networks.pdf</code>)—is the field story he tells whenever students ask, “Do these methods scale beyond toy graphs?” The team streamed 70 million tweets from August 1 through Election Day 2012, isolated 22 GB of usable data, and hand-tagged 46,003 ideologically self-described users (19,509 liberals; 26,494 conservatives). They also archived 1,588 tweets from the top 25 U.S. newspapers and broadcast accounts plus all 1,722 campaign tweets from @BarackObama/@Obama2012 and @MittRomney/@TeamRomney.</p>
+    <p>Every tweet mentioning one of the 16 issue lexicons (tax, jobs, deficit, economy, foreign affairs, immigration, health care, public order, LGBT, abortion, environment, energy, education, role of government, middle class, welfare) was converted into an ego network with Obama or Romney at the center and issues at the periphery. Sentistrength scores then filtered those networks into “associative” (any tie) versus “competent” (positive tie) versions. Quadratic assignment procedure (QAP) regressions compared Period 3 citizen networks (Oct 23–Nov 6) to Period 2 media or campaign networks (Sep 1–Oct 22).</p>
+    <div class="table-scroll">
+      <table>
+        <caption>Issue ownership network fit for Obama (r<sup>2</sup>)</caption>
+        <thead><tr><th></th><th colspan="2">News media</th><th colspan="2">Obama campaign</th></tr>
+        <tr><th>Audience</th><th>Associative</th><th>Competent</th><th>Associative</th><th>Competent</th></tr></thead>
+        <tbody>
+          <tr><td>Liberals</td><td>0.98</td><td>0.92</td><td>0.53</td><td>0.63</td></tr>
+          <tr><td>Conservatives</td><td>0.95</td><td>0.86</td><td>0.36</td><td>0.38</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="table-scroll">
+      <table>
+        <caption>Issue ownership network fit for Romney (r<sup>2</sup>)</caption>
+        <thead><tr><th></th><th colspan="2">News media</th><th colspan="2">Romney campaign</th></tr>
+        <tr><th>Audience</th><th>Associative</th><th>Competent</th><th>Associative</th><th>Competent</th></tr></thead>
+        <tbody>
+          <tr><td>Liberals</td><td>0.95</td><td>0.83</td><td>0.36</td><td>0.12</td></tr>
+          <tr><td>Conservatives</td><td>0.85</td><td>0.74</td><td>0.21</td><td>0.13</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>The media clearly transferred more of their network structure than the campaigns (H7). Obama&apos;s campaign accounts nudged “competent” perceptions among both blocs (0.63 liberals, 0.38 conservatives), whereas Romney&apos;s feeds barely broke 0.12 with conservatives on competence. H6 also hinted at contrasting strategy: Obama&apos;s team pushed competence, Republicans leaned on associative pairs (0.36 vs. 0.12).</p>
+    <div class="table-scroll">
+      <table>
+        <caption>Top associative issue pairs (conservatives)</caption>
+        <thead><tr><th>Period</th><th>Obama</th><th>Romney</th></tr></thead>
+        <tbody>
+          <tr><td>Preelection (Aug)</td><td>Energy ↔ Jobs • Foreign Affairs ↔ LGBT • Economy ↔ Deficit</td><td>Tax ↔ Budget • Tax ↔ Jobs • Tax ↔ Economy</td></tr>
+          <tr><td>Election (Oct 23–Nov 6)</td><td>Foreign Affairs ↔ Healthcare • Foreign Affairs ↔ LGBT • Foreign Affairs ↔ Public Order</td><td>Foreign Affairs ↔ Jobs • Economy ↔ Jobs • Jobs ↔ Healthcare</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="table-scroll">
+      <table>
+        <caption>Top associative issue pairs (liberals)</caption>
+        <thead><tr><th>Period</th><th>Obama</th><th>Romney</th></tr></thead>
+        <tbody>
+          <tr><td>Preelection (Aug)</td><td>Economy ↔ Jobs • Energy ↔ Jobs • Economy ↔ Healthcare</td><td>Tax ↔ Middle Class • Tax ↔ Foreign Affairs • Tax ↔ Deficit</td></tr>
+          <tr><td>Election (Oct 23–Nov 6)</td><td>Economy ↔ Jobs • Foreign Affairs ↔ Healthcare • Energy ↔ Jobs</td><td>Foreign Affairs ↔ Jobs • Foreign Affairs ↔ Tax • Tax ↔ Middle Class</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <figure>
+      <object data="network_analysis_phd_lecture_assets/assets/guo_vargo_2015/Guo_Vargo_2015_Power_of_Message_Networks.pdf#page=15" type="application/pdf" width="100%" height="420">
+        <p>See page 15 of the Guo &amp; Vargo PDF for Figures 1–2.</p>
+      </object>
+      <figcaption>Figures 1–2: Conservative associative issue networks during August 2012 (Obama vs. Romney). Note how Obama&apos;s network linked energy ↔ jobs ↔ healthcare while Romney&apos;s revolved around tax.</figcaption>
+    </figure>
+    <figure>
+      <object data="network_analysis_phd_lecture_assets/assets/guo_vargo_2015/Guo_Vargo_2015_Power_of_Message_Networks.pdf#page=16" type="application/pdf" width="100%" height="420">
+        <p>See page 16 of the Guo &amp; Vargo PDF for Figures 3–4.</p>
+      </object>
+      <figcaption>Figures 3–4: Conservative associative issue networks during the final campaign sprint. Foreign affairs became the bridge issue for both candidates, illustrating how NAS can reveal real-time shifts.</figcaption>
+    </figure>
+    <p>Interpretation: Users citing multiple civic brands (e.g., @civicscholar) have higher betweenness and may bridge transit and lifestyle audiences. In the semantic network, <em>economy</em> and <em>jobs</em> act as hubs, echoing network agenda-setting findings where issue pairs (e.g., economy–jobs) structured election narratives (Guo &amp; Vargo 2015). In the strategic-communication co-citation network, the field&apos;s intellectual heritage clusters tightly around diffusion theory and word-of-mouth marketing, while Dr. Vargo&apos;s advertising-focused pieces bridge into public relations and methodology outlets.</p>
+    <div class="back-to-top"><a href="#top-nav">Back to top</a></div>
+  </section>
+
+  <section id="networks-regression">
+    <h2>Networks and Regression: Using Network Measures in Quantitative Models</h2>
+    <p>Network measures can play two roles:</p>
+    <ul>
+      <li><strong>Predictors:</strong> Include degree, centrality, or community membership as covariates to predict outcomes like adoption, sales, or sentiment.</li>
+      <li><strong>Outcomes:</strong> Model whether centrality changes when running interventions (e.g., does training increase a support agent&apos;s betweenness?).</li>
+    </ul>
+    <p><strong>Dependency warning:</strong> Standard regression assumes independent errors. Nodes in the same network share neighbors, so standard errors can be biased. Strategies include permutation tests, network autocorrelation models, or multi-level structures. At minimum, discuss these dependencies transparently.</p>
+    <pre><code class="language-r">library(igraph)
+set.seed(42)
+
+g &lt;- sample_gnp(n = 30, p = 0.12)
+deg &lt;- degree(g)
+
+adopt_prob &lt;- plogis(-1 + 0.15 * deg)
+adopted &lt;- rbinom(30, 1, adopt_prob)
+
+data_df &lt;- data.frame(node = 1:30, degree = deg, adopted = adopted)
+
+model &lt;- glm(adopted ~ degree, data = data_df, family = binomial())
+summary(model)
+
+predict_df &lt;- data.frame(degree = 0:10)
+predict_df$prob &lt;- predict(model, newdata = predict_df, type = "response")
+predict_df</code></pre>
+    <p><strong>Interpretation:</strong> A positive coefficient on degree suggests each additional tie increases the log-odds of adoption. Emphasize that this does not prove causality; maybe already-enthusiastic nodes create both more ties and more adoptions. Encourage robustness checks (e.g., shuffle edges or run quadratic assignment procedures).</p>
+    <div class="back-to-top"><a href="#top-nav">Back to top</a></div>
+  </section>
+
+  <section id="pitfalls">
+    <h2>Pitfalls and Practical Issues</h2>
+    <ul>
+      <li><strong>Boundary specification:</strong> Decide who is in the network (time window, geographic scope, platform). Missing actors bias centrality.</li>
+      <li><strong>Missing edges:</strong> APIs or surveys rarely capture all ties. Document sampling processes and sensitivity analyses.</li>
+      <li><strong>Direction &amp; time:</strong> Static snapshots hide evolution. Consider longitudinal slices or dynamic models when behavior shifts.</li>
+      <li><strong>Causality vs association:</strong> Centrality correlates with outcomes but does not, by itself, establish causal influence.</li>
+      <li><strong>Data hygiene:</strong> Deduplicate users, correct encoding (UTF-16 exports in the social listening datasets), and anonymize sensitive handles when needed.</li>
+    </ul>
+    <div class="table-scroll">
+      <table>
+        <thead><tr><th>Do</th><th>Don&apos;t</th></tr></thead>
+        <tbody>
+          <tr><td>Document thresholds (e.g., users with &gt;2 mentions) so analyses are reproducible.</td><td>Filter opportunistically without noting how it changes density.</td></tr>
+          <tr><td>Check whether directed edges should be symmetrized before computing undirected measures.</td><td>Mix directed and undirected interpretations in the same plot.</td></tr>
+          <tr><td>Use null models (random, degree-preserving) to contextualize clustering or hubs.</td><td>Assume every observed pattern is meaningful without comparison.</td></tr>
+          <tr><td>Store raw edge lists plus derived metrics for reproducibility.</td><td>Keep only the plotted layout coordinates.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="back-to-top"><a href="#top-nav">Back to top</a></div>
+  </section>
+
+  <section id="check-understanding">
+    <h2>Check Your Understanding</h2>
+    <p>Use these quick questions as formative checks during class or as a post-lecture quiz. Click each button to reveal the explanation.</p>
+    <div class="quiz-item">
+      <p><strong>Q1:</strong> You have a directed mention network where most users mention only one brand, but one activist mentions five. Which centrality best captures their role as an information spreader?</p>
+      <ul><li>A. Betweenness</li><li>B. Degree (out-degree)</li><li>C. Closeness</li><li>D. PageRank</li></ul>
+      <button onclick="toggleAnswer('ans1')">Show answer</button>
+      <div id="ans1" class="quiz-answer">Answer: B. Out-degree counts how many distinct brands they mention, indicating broadcasting potential. Betweenness would matter if they brokered between otherwise disconnected factions.</div>
+    </div>
+    <div class="quiz-item">
+      <p><strong>Q2:</strong> Which data structure is most compact for a sparse network with 10,000 nodes and only 15,000 edges?</p>
+      <ul><li>A. Full adjacency matrix</li><li>B. Adjacency list or edge list</li><li>C. Raster image</li><li>D. Degree sequence only</li></ul>
+      <button onclick="toggleAnswer('ans2')">Show answer</button>
+      <div id="ans2" class="quiz-answer">Answer: B. Adjacency lists or edge lists store only existing edges, saving space and computation.</div>
+    </div>
+    <div class="quiz-item">
+      <p><strong>Q3:</strong> A bipartite network links news outlets to issues. To see how issues co-occur, what operation should you perform?</p>
+      <ul><li>A. Randomly delete news outlets</li><li>B. Project the bipartite network onto the issue mode</li><li>C. Compute eigenvector centrality on the outlets</li><li>D. Convert to a time series</li></ul>
+      <button onclick="toggleAnswer('ans3')">Show answer</button>
+      <div id="ans3" class="quiz-answer">Answer: B. Project onto the issue mode so two issues connect when they appear in the same outlet, then analyze the resulting issue–issue network.</div>
+    </div>
+    <div class="quiz-item">
+      <p><strong>Q4:</strong> In a semantic network, you observe many triangles (word triples) about climate, energy, and jobs. Which descriptive measure captures this pattern?</p>
+      <ul><li>A. Density</li><li>B. Clustering coefficient</li><li>C. Degree centrality</li><li>D. PageRank</li></ul>
+      <button onclick="toggleAnswer('ans4')">Show answer</button>
+      <div id="ans4" class="quiz-answer">Answer: B. The clustering coefficient quantifies the prevalence of closed triads or triangles.</div>
+    </div>
+    <div class="quiz-item">
+      <p><strong>Q5:</strong> A network has two dense subgroups with only a couple of ties between them. Which centrality should you highlight if you care about the few nodes who bridge those groups?</p>
+      <ul><li>A. Betweenness</li><li>B. Degree</li><li>C. Closeness</li><li>D. Eigenvector</li></ul>
+      <button onclick="toggleAnswer('ans5')">Show answer</button>
+      <div id="ans5" class="quiz-answer">Answer: A. Betweenness centrality flags nodes that sit on many shortest paths between clusters, indicating brokerage.</div>
+    </div>
+    <div class="quiz-item">
+      <p><strong>Q6:</strong> Suppose you run a regression predicting customer advocacy from PageRank. Why must you mention network dependence in your model write-up?</p>
+      <ul><li>A. Because PageRank is always zero</li><li>B. Because nodes connected in the network may have correlated errors, violating independence assumptions</li><li>C. Because regressions cannot include centrality scores</li><li>D. Because PageRank is undefined for directed graphs</li></ul>
+      <button onclick="toggleAnswer('ans6')">Show answer</button>
+      <div id="ans6" class="quiz-answer">Answer: B. Shared neighbors induce correlated outcomes, so you should discuss dependencies, resampling, or robust errors.</div>
+    </div>
+    <div class="quiz-item">
+      <p><strong>Q7:</strong> If an adjacency matrix is symmetric, what can you infer about the network?</p>
+      <ul><li>A. It is directed</li><li>B. It is undirected (ties are mutual)</li><li>C. It has self-loops</li><li>D. It is weighted</li></ul>
+      <button onclick="toggleAnswer('ans7')">Show answer</button>
+      <div id="ans7" class="quiz-answer">Answer: B. Symmetry implies <em>a<sub>ij</sub> = a<sub>ji</sub></em>, so the network is undirected.</div>
+    </div>
+    <div class="quiz-item">
+      <p><strong>Q8:</strong> Scenario: You find that density is very low, but closeness scores vary widely. What classroom discussion question could you pose?</p>
+      <ul><li>A. Should we drop sparse nodes?</li><li>B. How can a sparse network still enable fast reach for some nodes via shortcuts?</li><li>C. Are densities and closeness identical?</li><li>D. Should we stop measuring centrality?</li></ul>
+      <button onclick="toggleAnswer('ans8')">Show answer</button>
+      <div id="ans8" class="quiz-answer">Answer: B. Even sparse graphs can contain shortcut paths that give some nodes high closeness, inviting discussion about small-world structure.</div>
+    </div>
+    <div class="back-to-top"><a href="#top-nav">Back to top</a></div>
+  </section>
+
+  <section id="further-reading">
+    <h2>Further Reading and References</h2>
+    <ul>
+      <li>Wasserman, S., &amp; Faust, K. (1994). <em>Social Network Analysis</em>. Foundational reference for mathematical underpinnings.</li>
+      <li>Borgatti, S.P., Everett, M.G., &amp; Johnson, J.C. (2018). <em>Analyzing Social Networks</em>. Accessible text with R/UCINet parallels.</li>
+      <li>Guo, L., &amp; Vargo, C.J. (2015). "The Power of Message Networks" &mdash; network agenda-setting study linking semantic co-occurrences to political perceptions.</li>
+      <li>Vargo, C.J. (Social Media Network Analysis meta-study) &mdash; bibliometric mapping of 100k+ co-citations showing core clusters (word of mouth, uses &amp; gratifications, networks, marketing/advertising, methods) across 289 journals.</li>
+      <li>igraph R package documentation: <a href="https://igraph.org/r/" target="_blank" rel="noopener">https://igraph.org/r/</a>.</li>
+      <li>RStudio primer on network visualization with <code>ggraph</code> and <code>tidygraph</code>.</li>
+      <li>Image credits (Wikimedia Commons unless noted) include Diagram of a Social Network, Social Network Diagram, Network of Contacts, Social Network as Graph, Karate Club Network, Social Network Analysis Visualization, Small-world Network Example, Scale-free Network Sample, Complex Network Degree Distribution, and Degree Distributions.</li>
+    </ul>
+    <p>All other text, tables, and R snippets were authored for this lecture. External JavaScript via vis-network provides interactive graphs without additional dependencies.</p>
+    <div class="back-to-top"><a href="#top-nav">Back to top</a></div>
+  </section>
+</main>
+<script>
+const strategicNetworkData = {"nodes": [{"id": "A_ID__495", "label": "\"the 'expert patient\": empowerment or medical dominance? the case of weight loss, pharmaceuticals and the internet; fox, n.j.; ward, k.j.; o'rourke, a.j. social science and medicine); 2005 vol. 60 issue 6, p1299-1309. document type: article; (an ssm.fj.abii.fox.pemdcw) [citation record]", "group": "Article", "raw": "ID##495", "degree": 14, "betweenness": 0.5053, "closeness": 0.4844}, {"id": "A_ID__302", "label": "a social world perspective. studies in symbolic interaction, 1, pp. 119\u2013128. strauss, a. & corbin, j. (1990).", "group": "Article", "raw": "ID##302", "degree": 5, "betweenness": 0.0695, "closeness": 0.357}, {"id": "A_ID__492", "label": "a case study-based investigation of students' experiences with social software tools; minocha, s. new review of hypermedia and multimedia); 2009 vol. 15, p245-265, 21p. document type: article; (an nrhm.ae.bde.minocha.csises) [citation record]", "group": "Article", "raw": "ID##492", "degree": 8, "betweenness": 0.0828, "closeness": 0.2886}, {"id": "A_ID__475", "label": "a literature review: role of social media in contemporary marketing. http://agroovyweb.com/2010/03/11/university-of-chicago-and-my-literature- review-role-of-social-media-in-contemporary-marketing/ (accessed august 27, 2010).", "group": "Article", "raw": "ID##475", "degree": 5, "betweenness": 0.0814, "closeness": 0.357}, {"id": "A_ID__245", "label": "a call for user-generated branding; burmann, c. journal of brand management); 2010 vol. 18 issue 1, p1-4, 4p. document type: article; (an jbm.ah.a.burmann.cub) [citation record]", "group": "Article", "raw": "ID##245", "degree": 11, "betweenness": 0.3378, "closeness": 0.4239}, {"id": "A_ID__507", "label": "\u201cconsumer evaluations of brand extensions: further empirical evidence; sunde, lorraine; roderick j. brodie \u201d international journal of research in marketing); 1993 vol. 10 issue 1, 7p. document type: article; (an ijrm.aj.dg.sunde.cebefe) [citation record]", "group": "Article", "raw": "ID##507", "degree": 1, "betweenness": 0.0, "closeness": 0.0323}, {"id": "A_ID__348", "label": "a social influence model of consumer participation in network- and small-group-based virtual communities; dholakia, u. m.; bagozzi, r. p.; pearo, l. k. international journal of research in marketing); 2004 vol. 21 issue 3, p241-263, 23p. document type: article; (an ijrm.ba.bda.dholakia.simcpn) [citation record]", "group": "Article", "raw": "ID##348", "degree": 6, "betweenness": 0.0393, "closeness": 0.2826}, {"id": "C_761001", "label": "electronic word-of- mouth via consumer opinion platforms: what motivates consumers to articulate themselves on the internet? journal of interactive marketing, 18 (1).", "group": "Citation", "raw": 761001, "degree": 4, "betweenness": 0.0596, "closeness": 0.3478, "cluster": "Word of Mouth & Diffusion"}, {"id": "C_2506003", "label": "Citation 2506003", "group": "Citation", "raw": 2506003, "degree": 3, "betweenness": 0.0972, "closeness": 0.4376}, {"id": "C_950", "label": "Citation 950", "group": "Citation", "raw": 950, "degree": 2, "betweenness": 0.0067, "closeness": 0.2886}, {"id": "C_147", "label": "Citation 147", "group": "Citation", "raw": 147, "degree": 2, "betweenness": 0.0129, "closeness": 0.3391}, {"id": "C_1340", "label": "marketing in hypermedia computer mediated environments: conceptual foundations; hoffman, d.; novak, t. journal of marketing); 1996 vol. 59 issue 3, p50-68, 19p. document type: article; (an jm.ei.ej.hoffman.mhcmec) [citation record]", "group": "Citation", "raw": 1340, "degree": 2, "betweenness": 0.0704, "closeness": 0.4239, "cluster": "Word of Mouth & Diffusion"}, {"id": "C_113", "label": "a social influence model of consumer participation in network and small- group-based virtual communities. international journal of research in marketing 2004; 21:241\u201363.", "group": "Citation", "raw": 113, "degree": 2, "betweenness": 0.0073, "closeness": 0.3083, "cluster": "Word of Mouth & Diffusion"}, {"id": "C_1138", "label": "Citation 1138", "group": "Citation", "raw": 1138, "degree": 1, "betweenness": 0.0, "closeness": 0.0323}, {"id": "C_1358001", "label": "Citation 1358001", "group": "Citation", "raw": 1358001, "degree": 2, "betweenness": 0.0073, "closeness": 0.3083}, {"id": "C_1086", "label": "how word-of-mouth advertising works, harvardbusiness review, 16.november\u2013december, 147\u201366.", "group": "Citation", "raw": 1086, "degree": 2, "betweenness": 0.0179, "closeness": 0.357, "cluster": "Other"}, {"id": "C_371", "label": "Citation 371", "group": "Citation", "raw": 371, "degree": 2, "betweenness": 0.0089, "closeness": 0.3155}, {"id": "C_230", "label": "Citation 230", "group": "Citation", "raw": 230, "degree": 2, "betweenness": 0.0129, "closeness": 0.3391}, {"id": "C_149", "label": "Citation 149", "group": "Citation", "raw": 149, "degree": 2, "betweenness": 0.0129, "closeness": 0.3391}, {"id": "C_151", "label": "ad lib: when customers create the ad; berthon, pr; pitt, lf; campbell, c california management review); 2008 vol. 50 issue 4, p6-30, 25p. document type: article; (an cmr.ej.f.berthon.alwcca) [citation record]", "group": "Citation", "raw": 151, "degree": 2, "betweenness": 0.0704, "closeness": 0.4239, "cluster": "Networks & Networking"}, {"id": "C_2648", "label": "Citation 2648", "group": "Citation", "raw": 2648, "degree": 2, "betweenness": 0.0073, "closeness": 0.3155}, {"id": "C_1403", "label": "Citation 1403", "group": "Citation", "raw": 1403, "degree": 2, "betweenness": 0.0129, "closeness": 0.3391}, {"id": "C_1572", "label": "Citation 1572", "group": "Citation", "raw": 1572, "degree": 2, "betweenness": 0.0073, "closeness": 0.3083}, {"id": "C_2535", "label": "users of the world unite! the challenges and opportunities of social media; kaplan, a.m.; haenlein, m. business horizons); 2010 vol. 53, p59-68, 10p. document type: article; (an bh.ec.ei.kaplan.uwucos) [citation record]", "group": "Citation", "raw": 2535, "degree": 2, "betweenness": 0.0073, "closeness": 0.3155, "cluster": "Other"}, {"id": "C_692", "label": "Citation 692", "group": "Citation", "raw": 692, "degree": 2, "betweenness": 0.0129, "closeness": 0.3391}, {"id": "C_1339", "label": "Citation 1339", "group": "Citation", "raw": 1339, "degree": 1, "betweenness": 0.0, "closeness": 0.2224}, {"id": "C_2173", "label": "the effect of word of mouth on sales: online book reviews, journal of marketing research, august, 345\u201354. consumers union (2001).", "group": "Citation", "raw": 2173, "degree": 2, "betweenness": 0.0179, "closeness": 0.357, "cluster": "Word of Mouth & Diffusion"}, {"id": "C_1900", "label": "Citation 1900", "group": "Citation", "raw": 1900, "degree": 1, "betweenness": 0.0, "closeness": 0.323}, {"id": "C_2086", "label": "Citation 2086", "group": "Citation", "raw": 2086, "degree": 2, "betweenness": 0.0129, "closeness": 0.3391}, {"id": "C_829", "label": "Citation 829", "group": "Citation", "raw": 829, "degree": 2, "betweenness": 0.0129, "closeness": 0.3391}, {"id": "C_820", "label": "Citation 820", "group": "Citation", "raw": 820, "degree": 2, "betweenness": 0.0717, "closeness": 0.3768}, {"id": "C_1735", "label": "Citation 1735", "group": "Citation", "raw": 1735, "degree": 2, "betweenness": 0.0073, "closeness": 0.3083}], "edges": [{"from": "A_ID__495", "to": "C_147"}, {"from": "A_ID__495", "to": "C_149"}, {"from": "A_ID__495", "to": "C_151"}, {"from": "A_ID__495", "to": "C_230"}, {"from": "A_ID__495", "to": "C_692"}, {"from": "A_ID__495", "to": "C_820"}, {"from": "A_ID__495", "to": "C_829"}, {"from": "A_ID__495", "to": "C_1086"}, {"from": "A_ID__495", "to": "C_1340"}, {"from": "A_ID__495", "to": "C_1403"}, {"from": "A_ID__495", "to": "C_1900"}, {"from": "A_ID__495", "to": "C_2086"}, {"from": "A_ID__495", "to": "C_2173"}, {"from": "A_ID__495", "to": "C_2506003"}, {"from": "A_ID__302", "to": "C_371"}, {"from": "A_ID__302", "to": "C_761001"}, {"from": "A_ID__302", "to": "C_1086"}, {"from": "A_ID__302", "to": "C_2173"}, {"from": "A_ID__302", "to": "C_2506003"}, {"from": "A_ID__492", "to": "C_147"}, {"from": "A_ID__492", "to": "C_149"}, {"from": "A_ID__492", "to": "C_230"}, {"from": "A_ID__492", "to": "C_692"}, {"from": "A_ID__492", "to": "C_829"}, {"from": "A_ID__492", "to": "C_1339"}, {"from": "A_ID__492", "to": "C_1403"}, {"from": "A_ID__492", "to": "C_2086"}, {"from": "A_ID__475", "to": "C_761001"}, {"from": "A_ID__475", "to": "C_820"}, {"from": "A_ID__475", "to": "C_950"}, {"from": "A_ID__475", "to": "C_2535"}, {"from": "A_ID__475", "to": "C_2648"}, {"from": "A_ID__245", "to": "C_113"}, {"from": "A_ID__245", "to": "C_151"}, {"from": "A_ID__245", "to": "C_371"}, {"from": "A_ID__245", "to": "C_761001"}, {"from": "A_ID__245", "to": "C_1340"}, {"from": "A_ID__245", "to": "C_1572"}, {"from": "A_ID__245", "to": "C_1735"}, {"from": "A_ID__245", "to": "C_2535"}, {"from": "A_ID__245", "to": "C_2648"}, {"from": "A_ID__245", "to": "C_1358001"}, {"from": "A_ID__245", "to": "C_2506003"}, {"from": "A_ID__507", "to": "C_1138"}, {"from": "A_ID__348", "to": "C_113"}, {"from": "A_ID__348", "to": "C_761001"}, {"from": "A_ID__348", "to": "C_950"}, {"from": "A_ID__348", "to": "C_1572"}, {"from": "A_ID__348", "to": "C_1735"}, {"from": "A_ID__348", "to": "C_1358001"}]};
+function toggleCode(id) {
+  const block = document.getElementById(id);
+  if (!block) return;
+  block.classList.toggle('visible');
+}
+function toggleAnswer(id) {
+  const ans = document.getElementById(id);
+  if (!ans) return;
+  if (ans.style.display === 'block') {
+    ans.style.display = 'none';
+  } else {
+    ans.style.display = 'block';
+  }
+}
+function showModel(target) {
+  const panels = document.querySelectorAll('.model-panel');
+  panels.forEach(panel => panel.classList.remove('active'));
+  const buttons = document.querySelectorAll('.model-tabs button');
+  buttons.forEach(btn => btn.classList.remove('active'));
+  const activePanel = document.getElementById(target);
+  if (activePanel) activePanel.classList.add('active');
+  const activeButton = document.getElementById('tab-' + target);
+  if (activeButton) activeButton.classList.add('active');
+}
+function resetCommunityColors() {
+  if (!window.communityNodes) return;
+  const palette = {
+    blue: '#3677c1',
+    gold: '#f4a261',
+    teal: '#2a9d8f'
+  };
+  communityNodes.forEach(node => {
+    communityNodes.update({
+      id: node.id,
+      color: {background: palette[node.group], border: '#1f2a44'}
+    });
+  });
+}
+function highlightCommunity(group) {
+  if (!window.communityNodes) return;
+  resetCommunityColors();
+  if (group === 'all') {
+    communityNetwork.setData({nodes: communityNodes, edges: communityEdges});
+    return;
+  }
+  communityNodes.forEach(node => {
+    if (node.group !== group) {
+      communityNodes.update({
+        id: node.id,
+        color: {background: 'rgba(200,200,200,0.4)', border: '#cccccc'}
+      });
+    }
+  });
+  communityNetwork.setData({nodes: communityNodes, edges: communityEdges});
+}
+document.addEventListener('DOMContentLoaded', function() {
+  if (typeof vis === 'undefined') return;
+  const clusterPalette = {
+    "Word of Mouth & Diffusion": "#ff9f1c",
+    "Uses & Gratifications": "#118ab2",
+    "Networks & Networking": "#06d6a0",
+    "Marketing & Advertising": "#ef476f",
+    "Methodology & Statistics": "#8338ec"
+  };
+  const centralityContainer = document.getElementById('centrality-vis');
+  if (centralityContainer && strategicNetworkData) {
+    const nodes = new vis.DataSet(
+      strategicNetworkData.nodes.map(node => {
+        const label = node.label.length > 50 ? node.label.slice(0, 50) + '…' : node.label;
+        const color = node.group === 'Article' ? '#2ec4b6' : (clusterPalette[node.cluster] || '#adb5bd');
+        return {
+          id: node.id,
+          label,
+          title: node.label + '\\nDegree: ' + node.degree + '\\nBetweenness: ' + node.betweenness + '\\nCloseness: ' + node.closeness + (node.cluster ? '\\nCluster: ' + node.cluster : ''),
+          color: {background: color, border: '#1f2a44'},
+          value: node.degree + 4,
+          shape: 'dot'
+        };
+      })
+    );
+    const edges = new vis.DataSet(strategicNetworkData.edges);
+    const options = {
+      nodes: {
+        scaling: {min: 8, max: 40},
+        font: {face: 'Inter', size: 14}
+      },
+      physics: {stabilization: true},
+      layout: {improvedLayout: true},
+      edges: {color: {color: '#c8d0e8'}},
+      interaction: {tooltipDelay: 40}
+    };
+    new vis.Network(centralityContainer, {nodes, edges}, options);
+  }
+  const communityContainer = document.getElementById('community-vis');
+  if (communityContainer) {
+    window.communityNodes = new vis.DataSet([
+      {id: 'A', label: 'Transit Lab', group: 'blue'},
+      {id: 'B', label: 'Civic Tech', group: 'blue'},
+      {id: 'C', label: 'Policy Pod', group: 'gold'},
+      {id: 'D', label: 'Brand Studio', group: 'gold'},
+      {id: 'E', label: 'Climate Hub', group: 'teal'},
+      {id: 'F', label: 'Equity Forum', group: 'teal'},
+      {id: 'G', label: 'Open Data', group: 'blue'}
+    ]);
+    window.communityEdges = new vis.DataSet([
+      {from: 'A', to: 'B'},
+      {from: 'B', to: 'C'},
+      {from: 'C', to: 'D'},
+      {from: 'D', to: 'E'},
+      {from: 'E', to: 'F'},
+      {from: 'F', to: 'G'},
+      {from: 'G', to: 'A'},
+      {from: 'B', to: 'E'}
+    ]);
+    const communityOptions = {
+      nodes: {shape: 'dot', size: 18, font: {color: '#333'}},
+      edges: {color: '#b7c0d6'},
+      physics: {stabilization: true}
+    };
+    window.communityNetwork = new vis.Network(communityContainer, {nodes: communityNodes, edges: communityEdges}, communityOptions);
+    resetCommunityColors();
+  }
+});
+</script>
+</body>
+</html>

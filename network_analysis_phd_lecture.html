@@ -1,0 +1,1968 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Introduction to Network Analysis for Quantitative Social Scientists</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  :root {
+    --bg: #020617;
+    --bg-alt: #0f172a;
+    --surface: #0b1120;
+    --surface-elevated: #11182c;
+    --surface-soft: #101826;
+    --accent: #38bdf8;
+    --accent-soft: rgba(56, 189, 248, 0.18);
+    --accent-strong: #0284c7;
+    --text-main: #e5e7eb;
+    --text-muted: #94a3b8;
+    --text-soft: #64748b;
+    --border-subtle: rgba(148, 163, 184, 0.35);
+    --code-bg: #020617;
+    --code-border: #1f2937;
+    --shadow-soft: 0 25px 60px rgba(2, 6, 23, 0.55);
+    --radius-lg: 20px;
+    --radius-md: 12px;
+    --radius-pill: 999px;
+  }
+  *, *::before, *::after { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    background: radial-gradient(circle at top, rgba(15, 118, 255, 0.12), transparent 50%) var(--bg);
+    color: var(--text-main);
+    line-height: 1.65;
+    min-height: 100vh;
+  }
+  a {
+    color: var(--accent);
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+  a:hover {
+    color: var(--accent-strong);
+  }
+  img {
+    max-width: 100%;
+    display: block;
+  }
+  .layout-shell {
+    display: grid;
+    grid-template-columns: minmax(0, 260px) minmax(0, 1fr);
+    gap: 2.5rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2.5rem 1.5rem 4rem;
+  }
+  .layout-nav {
+    position: sticky;
+    top: 1.5rem;
+    align-self: flex-start;
+  }
+  .nav-card {
+    background: var(--surface-elevated);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-lg);
+    padding: 1.25rem 1.1rem;
+    box-shadow: var(--shadow-soft);
+  }
+  .nav-heading {
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--text-muted);
+    margin: 0 0 0.9rem;
+  }
+  .nav-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+  }
+  .nav-link {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.45rem 0.85rem;
+    border-radius: var(--radius-pill);
+    border: 1px solid transparent;
+    background: rgba(15, 23, 42, 0.35);
+    color: var(--text-main);
+    font-size: 0.9rem;
+    transition: background 0.2s ease, border-color 0.2s ease;
+  }
+  .nav-link:hover {
+    border-color: var(--accent);
+    background: rgba(56, 189, 248, 0.1);
+  }
+  .nav-link--active {
+    background: var(--accent);
+    color: #011627;
+  }
+  .layout-main {
+    display: flex;
+    flex-direction: column;
+    gap: 2.5rem;
+  }
+  .progress-track {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    height: 4px;
+    background: rgba(15, 23, 42, 0.6);
+    border-radius: var(--radius-pill);
+    overflow: hidden;
+  }
+  .progress-bar {
+    width: 0%;
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent), var(--accent-strong));
+    transition: width 0.2s ease-out;
+  }
+  .page-hero {
+    background: radial-gradient(circle at top left, rgba(56, 189, 248, 0.25), rgba(15, 23, 42, 0.85));
+    padding: 2.5rem;
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--border-subtle);
+    box-shadow: var(--shadow-soft);
+    position: relative;
+    overflow: hidden;
+  }
+  .page-hero::after {
+    content: "";
+    position: absolute;
+    inset: 1rem;
+    border-radius: 50%;
+    background: rgba(59, 130, 246, 0.08);
+    filter: blur(60px);
+    pointer-events: none;
+  }
+  .hero-content {
+    position: relative;
+    z-index: 1;
+  }
+  .hero-meta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.3rem 0.9rem;
+    border-radius: var(--radius-pill);
+    border: 1px solid rgba(56, 189, 248, 0.5);
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--accent);
+    background: rgba(2, 6, 23, 0.45);
+  }
+  .page-hero h1 {
+    margin: 1rem 0 0.6rem;
+    font-size: clamp(2.4rem, 4vw, 3rem);
+    line-height: 1.2;
+  }
+  .hero-lead {
+    font-size: 1.05rem;
+    max-width: 65ch;
+    color: var(--text-muted);
+    margin-bottom: 1.5rem;
+  }
+  .hero-highlights {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 0.8rem;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+  }
+  .hero-highlights li {
+    background: rgba(2, 6, 23, 0.55);
+    border: 1px solid rgba(148, 163, 184, 0.2);
+    border-radius: var(--radius-md);
+    padding: 0.75rem 0.9rem;
+    font-size: 0.92rem;
+  }
+  .section-block {
+    background: var(--surface);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--border-subtle);
+    padding: 2rem;
+    box-shadow: var(--shadow-soft);
+  }
+  .section-block + .section-block {
+    margin-top: 0.5rem;
+  }
+  .section-block > h2 {
+    font-size: 1.7rem;
+    margin: 0 0 0.8rem;
+    letter-spacing: 0.015em;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+  .section-block > h2::before {
+    content: "";
+    width: 18px;
+    height: 3px;
+    border-radius: 999px;
+    background: linear-gradient(90deg, var(--accent), var(--accent-strong));
+  }
+  .section-lead {
+    font-size: 1rem;
+    color: var(--text-muted);
+    max-width: 70ch;
+    margin: 0 0 1.3rem;
+  }
+  .section-block p {
+    margin: 0.75rem 0;
+  }
+  .section-block ul {
+    padding-left: 1.2rem;
+    margin: 0.8rem 0;
+    color: var(--text-main);
+  }
+  .keyword {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.1rem 0.5rem;
+    border-radius: var(--radius-pill);
+    background: var(--accent-soft);
+    color: var(--accent);
+    font-size: 0.85em;
+    font-weight: 500;
+  }
+  .term {
+    position: relative;
+    cursor: help;
+    padding-bottom: 0.03em;
+    border-bottom: 1px dashed rgba(148, 163, 184, 0.7);
+  }
+  .term::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    left: 50%;
+    top: 100%;
+    transform: translate(-50%, 0.75rem);
+    background: #020617;
+    color: #e5e7eb;
+    font-size: 0.75rem;
+    line-height: 1.3;
+    border-radius: 0.7rem;
+    padding: 0.5rem 0.65rem;
+    box-shadow: 0 18px 35px rgba(2, 6, 23, 0.9);
+    opacity: 0;
+    pointer-events: none;
+    max-width: 260px;
+    white-space: normal;
+    transition: opacity 0.15s ease-out, transform 0.15s ease-out;
+    z-index: 20;
+  }
+  .term:hover::after,
+  .term:focus-visible::after {
+    opacity: 1;
+    transform: translate(-50%, 0.35rem);
+  }
+  .callout {
+    border-radius: var(--radius-lg);
+    padding: 1.1rem 1.2rem;
+    background: radial-gradient(circle at top left, rgba(56, 189, 248, 0.12), var(--surface-soft));
+    border: 1px solid var(--border-subtle);
+    box-shadow: var(--shadow-soft);
+    margin: 1.2rem 0;
+  }
+  .callout-label {
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.09em;
+    color: var(--accent);
+    margin-bottom: 0.25rem;
+  }
+  .callout-title {
+    font-size: 1.05rem;
+    font-weight: 600;
+    margin: 0.2rem 0 0.6rem;
+  }
+  .callout-body p {
+    margin: 0.5rem 0;
+  }
+  .callout-body ul {
+    margin: 0.6rem 0 0.2rem;
+    padding-left: 1.2rem;
+  }
+  .callout--example {
+    background: radial-gradient(circle at top left, rgba(74, 222, 128, 0.12), var(--surface-soft));
+  }
+  .callout--warning {
+    background: radial-gradient(circle at top left, rgba(248, 113, 113, 0.12), var(--surface-soft));
+  }
+  .callout--research {
+    background: radial-gradient(circle at top left, rgba(196, 181, 253, 0.12), var(--surface-soft));
+  }
+  .figure-card {
+    margin: 1.4rem 0;
+    padding: 0.9rem;
+    border-radius: var(--radius-lg);
+    background: radial-gradient(circle at top left, rgba(56, 189, 248, 0.08), var(--surface-soft));
+    border: 1px solid var(--border-subtle);
+  }
+  .figure-card img {
+    border-radius: var(--radius-md);
+  }
+  .figure-card figcaption {
+    margin-top: 0.65rem;
+    font-size: 0.85rem;
+    color: var(--text-soft);
+  }
+  .pdf-viewer {
+    margin: 1.2rem 0;
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--border-subtle);
+    overflow: hidden;
+    box-shadow: var(--shadow-soft);
+    background: rgba(2, 6, 23, 0.85);
+  }
+  .pdf-viewer iframe {
+    width: 100%;
+    height: 520px;
+    border: none;
+    background: rgba(2, 6, 23, 0.9);
+  }
+  .pdf-note {
+    font-size: 0.82rem;
+    color: var(--text-soft);
+    margin-bottom: 0.6rem;
+  }
+  .adj-list {
+    padding-left: 1.2rem;
+    margin: 0.4rem 0 0;
+  }
+  .adj-list li {
+    margin-bottom: 0.35rem;
+  }
+  .table-wrap {
+    margin: 1rem 0 1.4rem;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border-subtle);
+    overflow-x: auto;
+    background: rgba(2, 6, 23, 0.85);
+  }
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.86rem;
+  }
+  .data-table th,
+  .data-table td {
+    padding: 0.6rem 0.75rem;
+    border-bottom: 1px solid rgba(31, 41, 55, 0.9);
+    text-align: left;
+  }
+  .data-table thead {
+    background: rgba(15, 23, 42, 0.95);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-size: 0.7rem;
+    color: var(--text-soft);
+  }
+  .data-table tbody tr:nth-child(even) {
+    background: rgba(15, 23, 42, 0.55);
+  }
+  .data-table--mini {
+    font-size: 0.75rem;
+  }
+  .data-table--mini th,
+  .data-table--mini td {
+    text-align: center;
+    padding: 0.35rem;
+  }
+  .sandbox {
+    margin: 1.3rem 0 1.8rem;
+    padding: 1.2rem 1.3rem 1.4rem;
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--border-subtle);
+    background: radial-gradient(circle at top right, rgba(56, 189, 248, 0.18), rgba(15, 23, 42, 0.95));
+    box-shadow: var(--shadow-soft);
+  }
+  .sandbox-header {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    margin-bottom: 0.9rem;
+  }
+  .sandbox-label {
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+  .sandbox h3 {
+    margin: 0;
+    font-size: 1.1rem;
+  }
+  .viz-note {
+    font-size: 0.88rem;
+    color: var(--text-muted);
+    margin: 0.4rem 0 0.9rem;
+  }
+  .viz-controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+    align-items: flex-end;
+  }
+  .viz-controls label {
+    font-size: 0.85rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+  .viz-metrics {
+    margin-top: 0.8rem;
+    font-size: 0.86rem;
+    color: var(--text-muted);
+  }
+  .viz-checkbox {
+    flex-direction: row;
+    align-items: center;
+    gap: 0.45rem;
+  }
+  .viz-errors {
+    margin-top: 0.5rem;
+    font-size: 0.83rem;
+    color: #f87171;
+  }
+  .viz-scratch-layout {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+  .viz-scratch-input,
+  .viz-scratch-vis {
+    flex: 1 1 260px;
+  }
+  #edge-input {
+    width: 100%;
+    min-height: 140px;
+    font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+    font-size: 0.85rem;
+    background: rgba(2, 6, 23, 0.8);
+    color: var(--text-main);
+    border: 1px solid rgba(148, 163, 184, 0.5);
+    border-radius: var(--radius-md);
+    padding: 0.65rem;
+    resize: vertical;
+  }
+  #edge-draw {
+    margin-top: 0.5rem;
+  }
+  .viz-controls select,
+  .viz-controls input {
+    border-radius: var(--radius-md);
+    border: 1px solid rgba(148, 163, 184, 0.5);
+    background: rgba(2, 6, 23, 0.8);
+    color: var(--text-main);
+    font-size: 0.9rem;
+    padding: 0.35rem 0.55rem;
+  }
+  .viz-controls button,
+  button {
+    border-radius: var(--radius-pill);
+    border: 1px solid transparent;
+    background: var(--accent);
+    color: #011627;
+    font-weight: 600;
+    padding: 0.4rem 1.1rem;
+    cursor: pointer;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+  .viz-controls button:hover,
+  button:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 8px 20px rgba(56, 189, 248, 0.25);
+  }
+  .rep-toggle {
+    background: transparent;
+    border: 1px solid rgba(148, 163, 184, 0.5);
+    color: var(--text-main);
+    border-radius: var(--radius-pill);
+    padding: 0.35rem 0.9rem;
+  }
+  .rep-toggle.active {
+    background: var(--accent);
+    color: #011627;
+    border-color: var(--accent);
+  }
+  .code-toggle {
+    margin: 1rem 0 1.25rem;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border-subtle);
+    background: linear-gradient(135deg, rgba(2, 6, 23, 0.95), rgba(15, 23, 42, 0.95));
+    overflow: hidden;
+  }
+  .code-toggle > summary {
+    list-style: none;
+    cursor: pointer;
+    padding: 0.85rem 1rem;
+    font-size: 0.92rem;
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+  }
+  .code-toggle > summary::before {
+    content: "▶";
+    font-size: 0.7rem;
+    transition: transform 0.15s ease-out;
+  }
+  .code-toggle[open] > summary::before {
+    transform: rotate(90deg);
+  }
+  .code-toggle > summary::-webkit-details-marker {
+    display: none;
+  }
+  .code-block {
+    background: var(--code-bg);
+    border-radius: 0 0 var(--radius-md) var(--radius-md);
+    border-top: 1px solid var(--code-border);
+    padding: 0.95rem 1.1rem;
+    font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+    font-size: 0.82rem;
+    overflow-x: auto;
+    position: relative;
+  }
+  .code-block::before {
+    content: "R";
+    position: absolute;
+    top: 0.6rem;
+    right: 0.8rem;
+    border-radius: var(--radius-pill);
+    padding: 0.1rem 0.45rem;
+    border: 1px solid rgba(148, 163, 184, 0.5);
+    font-size: 0.7rem;
+    color: var(--text-soft);
+  }
+  .network-stage {
+    height: 420px;
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-lg);
+    background: rgba(2, 6, 23, 0.65);
+  }
+  .qa-list {
+    margin-top: 1.5rem;
+  }
+  .qa-item {
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border-subtle);
+    background: rgba(15, 23, 42, 0.92);
+    margin-bottom: 0.9rem;
+  }
+  .qa-item > summary {
+    padding: 0.8rem 1rem;
+    cursor: pointer;
+    font-size: 0.92rem;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .qa-item > summary::before {
+    content: "❓";
+  }
+  .qa-item[open] > summary::before {
+    content: "✅";
+  }
+  .qa-item p {
+    padding: 0 1rem 0.85rem;
+    margin: 0;
+    color: var(--text-main);
+  }
+  .pitfall-list {
+    list-style: none;
+    padding: 0;
+    margin: 0.8rem 0 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+  .pitfall-list li {
+    display: flex;
+    gap: 0.6rem;
+    align-items: flex-start;
+  }
+  .pitfall-icon {
+    width: 1.2rem;
+  }
+  .page-footer {
+    border-top: 1px solid rgba(148, 163, 184, 0.25);
+    padding-top: 1.5rem;
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+  }
+  .page-footer-meta {
+    font-size: 0.8rem;
+    color: var(--text-soft);
+    margin-top: 0.35rem;
+  }
+  .back-to-top {
+    position: fixed;
+    bottom: 1.5rem;
+    right: 1.5rem;
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    border: 1px solid rgba(56, 189, 248, 0.4);
+    background: rgba(2, 6, 23, 0.9);
+    color: var(--accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: var(--shadow-soft);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+  }
+  .back-to-top--visible {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(-4px);
+  }
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    border: 0;
+  }
+  @media (max-width: 900px) {
+    .layout-shell {
+      grid-template-columns: minmax(0, 1fr);
+      padding: 1.5rem 1rem 3.5rem;
+    }
+    .layout-nav {
+      position: static;
+      order: -1;
+      width: 100%;
+      overflow-x: auto;
+    }
+    .nav-card {
+      padding: 1rem;
+    }
+    .nav-list {
+      flex-direction: row;
+      flex-wrap: nowrap;
+      gap: 0.5rem;
+    }
+    .nav-link {
+      white-space: nowrap;
+    }
+  }
+  @media (max-width: 640px) {
+    .page-hero {
+      padding: 1.75rem;
+    }
+    .section-block {
+      padding: 1.5rem;
+    }
+    .viz-controls {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  }
+</style>
+<script src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
+</head>
+<body>
+<div class="layout-shell">
+  <aside class="layout-nav">
+    <div class="nav-card">
+      <p class="nav-heading">On this page</p>
+      <nav class="nav-list">
+        <a class="nav-link" href="#overview">Overview</a>
+        <a class="nav-link" href="#why-networks">Why Networks</a>
+        <a class="nav-link" href="#building-blocks">Network Building Blocks</a>
+        <a class="nav-link" href="#representation">Representation</a>
+        <a class="nav-link" href="#global-structure">Describing Global Structure</a>
+        <a class="nav-link" href="#centrality">Centrality</a>
+        <a class="nav-link" href="#patterns">Network Patterns &amp; Models</a>
+        <a class="nav-link" href="#communities">Communities &amp; Clustering</a>
+        <a class="nav-link" href="#applied">Applied Example</a>
+        <a class="nav-link" href="#regression">Networks &amp; Regression</a>
+        <a class="nav-link" href="#pitfalls">Pitfalls &amp; Practical Issues</a>
+        <a class="nav-link" href="#check">Check Your Understanding</a>
+      </nav>
+    </div>
+  </aside>
+  <main class="layout-main">
+    <div class="progress-track" aria-hidden="true">
+      <div class="progress-bar"></div>
+    </div>
+    <header class="page-hero">
+      <div class="hero-content">
+        <span class="hero-meta">PhD · Semester 1 · Networks &amp; Regression</span>
+        <h1>Introduction to Network Analysis for Quantitative Social Scientists</h1>
+        <p class="hero-lead">You already know regression. In this lecture, you’ll use that intuition to see how networks capture who connects to whom, how influence flows, and how those patterns plug back into the models you already trust.</p>
+        <ul class="hero-highlights">
+          <li>Recognize how <span class="term" data-tooltip="Nodes are the entities in the network, such as people, media outlets, or issues.">nodes</span>, <span class="term" data-tooltip="Edges are the connections or relationships between nodes, such as mentions, citations, or co-occurrences.">edges</span>, and network types arise in social science data.</li>
+          <li>Interpret foundational metrics (<span class="term" data-tooltip="Degree is the number of connections a node has; high degree means a node is very popular or active.">degree</span>, paths, density, clustering, centrality).</li>
+          <li>Relate network outputs to regression-style modeling and agenda-setting research.</li>
+          <li>Practice reading R code that builds and visualizes small graphs.</li>
+        </ul>
+      </div>
+    </header>
+
+    <section id="overview" class="section-block">
+      <h2>Big Research Questions Driving This Lecture</h2>
+      <p class="section-lead">To keep the math grounded, we’ll repeatedly return to a few real projects where networks answered questions that regression alone could not.</p>
+      <ul>
+        <li><strong>Who really leads the online U.S. news agenda?</strong> From <em>Networks, Big Data, and Intermedia Agenda Setting</em> (Vargo &amp; Guo, 2017), using 2015 U.S. online news.</li>
+        <li><strong>Which countries’ media shape how the world sees international news?</strong> From <em>Global Intermedia Agenda Setting</em> (Guo &amp; Vargo, 2017), based on 4,708 online news sources across 67 countries.</li>
+        <li><strong>Do Twitter users and news media share the same issue networks during elections?</strong> From <em>Network Issue Agendas on Twitter</em> (Vargo et al., 2014), using millions of 2012 U.S. election tweets.</li>
+        <li><strong>How do candidates “own” clusters of issues, not just single topics?</strong> From <em>The Power of Message Networks</em> (Guo &amp; Vargo, 2015), linking candidates to issue clusters in Twitter data.</li>
+        <li><strong>Does fake news dominate the media agenda, or is it embedded in partisan ecosystems?</strong> From <em>The Agenda-Setting Power of Fake News</em> (Vargo, Guo, &amp; Amazeen, 2018), using online media and fact-checker data from 2014–2016.</li>
+      </ul>
+      <p>As you move through each section—centrality, clustering, regression—we’ll point back to these studies so you can see how abstract metrics map onto real communication problems.</p>
+      <figure class="figure-card">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/4/47/Diagram_of_a_social_network.jpg" alt="Illustrative social network with labeled nodes and ties">
+        <figcaption>Social networks capture entities (nodes) and relations (edges); once mapped, we can ask quantitative questions about structure.</figcaption>
+      </figure>
+      <aside class="callout callout--concept">
+        <div class="callout-label">Navigation tip</div>
+        <div class="callout-body">
+          <p>Use the sticky navigation to jump between sections, skim the short orientation sentence at the top of each block, and open code samples only when you plan to run them.</p>
+        </div>
+      </aside>
+    </section>
+
+    <section id="why-networks" class="section-block">
+      <h2>Why Networks? Motivation for Quant Methods</h2>
+      <aside class="callout callout--concept">
+        <div class="callout-label">Concept</div>
+        <p class="section-lead">Networks appear whenever relationships drive meaning: friendship ties, journalists citing one another, brands connected by shared audiences, or issues co-occurring in campaign messages. Treating rows as independent observations hides those dependencies; treating them as networks preserves brokerage, diffusion paths, and structural constraints.</p>
+      </aside>
+      <aside class="callout callout--research">
+        <div class="callout-label">Research context</div>
+        <div class="callout-body">
+          <p class="callout-title">In Dr. Vargo’s work, these abstract ideas become concrete:</p>
+          <ul>
+            <li>In <em>Networks, Big Data, and Intermedia Agenda Setting</em>, each U.S. online outlet in 2015 is a node, and edges track how one outlet’s issue agenda predicts another’s coverage. A flat regression on outlet-level rows would miss who sits upstream in the agenda network.</li>
+            <li>In <em>Network Issue Agendas on Twitter</em>, issues are nodes and co-occurrences in millions of 2012 tweets become edges. Instead of just asking which single issue is most popular, the network lets us ask which <em>issue pairs</em> and <em>clusters</em> define each campaign’s narrative.</li>
+          </ul>
+        </div>
+      </aside>
+      <p>These are the kinds of questions where network structure adds something essential on top of familiar regression intuition.</p>
+      <ul>
+        <li><span class="keyword">Information flow</span> In <span class="term" data-tooltip="Intermedia agenda-setting describes how the issue choices of some media outlets influence the issue agendas of others.">intermedia agenda-setting</span> work, journalists retweet or cover each other’s topics, so edges represent causal influence.</li>
+        <li><span class="keyword">Audience overlap</span> Telecom mention networks reveal which customers bridge carriers and spread service narratives.</li>
+        <li><span class="keyword">Semantic structure</span> Issue pairs such as <em>economy–jobs</em> signal how campaigns frame agendas.</li>
+      </ul>
+      <figure class="figure-card">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/2/25/Social_network_diagram.svg" alt="Simple nodes-and-edges diagram illustrating a small network">
+        <figcaption>Even toy diagrams remind us that ideas move along ties, not isolated rows.</figcaption>
+      </figure>
+    </section>
+
+    <section id="building-blocks" class="section-block">
+      <h2>Network Building Blocks</h2>
+      <p class="section-lead">Before computing statistics, ensure you can specify what constitutes a node, what counts as an edge, and how the network boundary is drawn. (If you want the formal math, the classic treatment is Wasserman &amp; Faust’s <em>Social Network Analysis</em>.)</p>
+      <ul>
+        <li><strong>Nodes:</strong> actors, accounts, articles, or concepts.</li>
+        <li><strong>Edges:</strong> directed or undirected links, optionally weighted or signed.</li>
+        <li><strong>One-mode:</strong> nodes of the same type (journalist ↔ journalist). <strong>Two-mode:</strong> different types (journalist ↔ issue) that can be projected into one-mode networks.</li>
+      </ul>
+      <p>Example: a mention graph where @policywonk mentions @MetroTransit twice and @BikeCollective once.</p>
+      <details class="code-toggle"><summary>Show R code: toy mention graph</summary>
+        <p>This code builds a tiny directed network, prints an adjacency matrix, and plots the result.</p>
+        <pre class="code-block"><code class="language-r">library(igraph)
+
+edges &lt;- data.frame(
+  from = c("@policywonk", "@policywonk", "@urbanyogi"),
+  to   = c("@MetroTransit", "@BikeCollective", "@CityCoffee"),
+  weight = c(2, 1, 1)
+)
+
+mention_graph &lt;- graph_from_data_frame(edges, directed = TRUE)
+print(as_adjacency_matrix(mention_graph, sparse = FALSE))
+plot(mention_graph,
+     edge.width = edges$weight,
+     vertex.size = 28,
+     vertex.color = "#ffd166",
+     main = "Toy mention network")
+</code></pre>
+      </details>
+    </section>
+
+    <section id="representation" class="section-block">
+      <h2>Representing Networks Mathematically</h2>
+      <p class="section-lead">Three interchangeable data structures dominate most toolchains: edge lists, adjacency lists, and adjacency matrices. Use whichever is easiest for ingesting, storing, and sharing your network.</p>
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead><tr><th>Structure</th><th>Example</th><th>When useful</th></tr></thead>
+          <tbody>
+            <tr><td>Edge list</td><td>(Journalists, Campaigns, w=2)</td><td>CSV export, sparse graphs</td></tr>
+            <tr><td>Adjacency list</td><td>Journalists → {Campaigns, Voters}</td><td>Quick neighbor lookups</td></tr>
+            <tr><td>Adjacency matrix</td><td><table class="data-table data-table--mini"><tr><th></th><th>J</th><th>C</th><th>V</th></tr><tr><th>J</th><td>0</td><td>1</td><td>1</td></tr><tr><th>C</th><td>1</td><td>0</td><td>1</td></tr><tr><th>V</th><td>1</td><td>1</td><td>0</td></tr></table></td><td>Linear algebra, spectral methods</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <details class="code-toggle"><summary>Show R code: building from matrices and data frames</summary>
+        <p>This snippet constructs the same network using both an adjacency matrix and an edge list.</p>
+        <pre class="code-block"><code class="language-r">library(igraph)
+
+adj &lt;- matrix(c(0,1,1,
+                1,0,1,
+                1,1,0), nrow = 3, byrow = TRUE)
+dimnames(adj) &lt;- list(c("Journalists","Campaigns","Voters"),
+                     c("Journalists","Campaigns","Voters"))
+media_graph &lt;- graph_from_adjacency_matrix(adj, mode = "undirected")
+print(media_graph)
+
+edge_df &lt;- data.frame(
+  from = c("Journalists", "Journalists", "Campaigns"),
+  to   = c("Campaigns", "Voters", "Voters"),
+  weight = c(2, 1, 3)
+)
+media_graph_df &lt;- graph_from_data_frame(edge_df, directed = FALSE)
+summary(media_graph_df)
+</code></pre>
+      </details>
+      <div id="representation-playground" class="sandbox">
+        <div class="sandbox-header">
+          <span class="sandbox-label">Try it</span>
+          <h3>One small network, three representations</h3>
+          <p class="viz-note">Switch between edge list, adjacency matrix, and adjacency list for the same tiny media network.</p>
+        </div>
+        <div class="viz-controls">
+          <button type="button" class="rep-toggle active" data-rep="edge-list">Edge list</button>
+          <button type="button" class="rep-toggle" data-rep="adj-matrix">Adjacency matrix</button>
+          <button type="button" class="rep-toggle" data-rep="adj-list">Adjacency list</button>
+        </div>
+        <div id="representation-output" class="viz-output"></div>
+      </div>
+    </section>
+
+    <section id="global-structure" class="section-block">
+      <h2>Describing Global Structure</h2>
+      <p class="section-lead">Network-level descriptors help you compare graphs before fitting complex models.</p>
+    <ul>
+      <li><strong>Degree distribution:</strong> how popularity spreads across nodes.</li>
+      <li><strong>Paths and diameter:</strong> shortest-route distances and the longest of those distances.</li>
+      <li><strong>Density:</strong> ratio of observed to possible edges.</li>
+      <li><strong>Clustering coefficient:</strong> propensity for triangles; reveals local redundancy.</li>
+    </ul>
+      <figure class="figure-card">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/3/39/Complex_network_degree_distribution_of_random_and_scale-free.png" alt="Comparison between random and scale-free degree distributions">
+        <figcaption>Scale-free graphs exhibit heavy-tailed degree distributions, unlike the narrow peaks of random graphs.</figcaption>
+      </figure>
+    <p><strong>Global example.</strong> In <em>Global Intermedia Agenda Setting</em>, each country’s online news sources form a node in a world news-flow network. Degree and density reveal which countries are tightly connected, while the diameter and path structure show how quickly international stories can travel from a core country to the rest of the world.</p>
+      <aside class="callout callout--research">
+        <div class="callout-label">Study spotlight</div>
+        <p class="callout-title">Guo, L., &amp; Vargo, C. J. (2017). Global Intermedia Agenda Setting. <em>Journal of Communication</em>.</p>
+        <p><strong>Big question.</strong> How do news media in different countries shape one another’s coverage of international events?</p>
+        <p><strong>Data.</strong> A 2015 corpus of 4,708 online news sources from 67 countries, capturing flows of international news.</p>
+        <p><strong>Why network analysis?</strong> Treating countries as nodes and agenda-setting influence as edges exposes core versus semi-peripheral positions and the geopolitical blocs that emerge from mutual influence.</p>
+        <blockquote>
+          <p><strong>Global Intermedia Agenda Setting: A Big Data Analysis of International News Flow</strong><br /><em>Abstract:</em> This study contributes to international news flow literature methodologically by significantly expanding its scope and theoretically by incorporating intermedia agenda-setting theory, through which we reveal how news media in different countries influence each other in covering international news. With a big data analysis of 4,708 online news sources from 67 countries in 2015, the study shows that stronger, wealthier countries not only continue to attract most of the world news attention, they are also more likely to decide how other countries perceive the world. However, international news flow is not as hierarchical and U.S. centric as found earlier. Online-only, emerging media in core countries are not necessarily more impactful in setting the world news agenda than those in semi-peripheral countries.</p>
+        </blockquote>
+      </aside>
+      <details class="code-toggle"><summary>Show R code: Zachary Karate Club descriptors</summary>
+        <p>Compute degree, density, and clustering on a canonical benchmark graph.</p>
+        <pre class="code-block"><code class="language-r">library(igraph)
+
+karate &lt;- make_graph("Zachary")
+degree_values &lt;- degree(karate)
+cat("Mean degree:", mean(degree_values), "\n")
+cat("Density:", edge_density(karate), "\n")
+cat("Global clustering:", transitivity(karate, type = "global"), "\n")
+
+hist(degree_values,
+     col = "#6baed6",
+     main = "Degree distribution: Karate Club",
+     xlab = "Degree")
+</code></pre>
+      </details>
+    </section>
+
+    <section id="centrality" class="section-block">
+      <h2>Centrality: Who Matters?</h2>
+      <p class="section-lead">Different centrality measures capture distinct notions of importance. Use the metric that matches your theoretical question.</p>
+      <ul>
+        <li><strong><span class="term" data-tooltip="Degree is the number of connections a node has; high degree means a node is very popular or active.">Degree</span>:</strong> popularity or activity. Best for immediate reach.</li>
+        <li><strong><span class="term" data-tooltip="Betweenness centrality captures how often a node lies on shortest paths between others, indicating brokerage.">Betweenness</span>:</strong> brokerage along geodesic paths.</li>
+        <li><strong><span class="term" data-tooltip="Closeness centrality reflects how close a node is to all others in terms of shortest-path distance, linked to diffusion speed.">Closeness</span>:</strong> average distance to everyone else; diffusion speed.</li>
+        <li><strong><span class="term" data-tooltip="Eigenvector centrality rewards connections to already well-connected nodes; PageRank is a variant used on the web.">Eigenvector</span>/PageRank:</strong> reward ties to other influential nodes.</li>
+      </ul>
+      <p>In Dr. Vargo’s agenda-setting studies, centrality metrics correspond to very tangible actors:</p>
+      <ul>
+        <li>In <em>Networks, Big Data, and Intermedia Agenda Setting</em>, outlets with high eigenvector centrality in the 2015 U.S. news network tend to be those whose issue choices ripple across many others, especially online partisan media.</li>
+        <li>In <em>The Agenda-Setting Power of Fake News</em>, fake news and partisan sites occupy distinct centrality positions within the broader online media network, revealing that misinformation is powerful but also deeply intertwined with partisan outlets rather than standing alone.</li>
+      </ul>
+      <p>Centrality becomes less abstract when you can point to an outlet or country and say: “This node’s position helps explain who shapes everyone else’s agenda.”</p>
+      <aside class="callout callout--research">
+        <div class="callout-label">Study spotlight</div>
+        <p class="callout-title">Vargo, C. J., &amp; Guo, L. (2017). Networks, Big Data, and Intermedia Agenda Setting. <em>Journalism &amp; Mass Communication Quarterly</em>.</p>
+        <p><strong>Big question.</strong> In the 2015 U.S. online media environment, who really leads the news agenda—traditional elite newspapers or online partisan outlets?</p>
+        <p><strong>Data.</strong> A large-scale 2015 corpus of U.S. online news sources spanning traditional, partisan, and emerging media.</p>
+        <p><strong>Why network analysis?</strong> Modeling outlets as nodes and agenda-setting influence as edges reveals which outlets sit upstream, how reciprocal the ties are, and how influence varies across media types and issues.</p>
+        <blockquote>
+          <p><strong>Networks, Big Data, and Intermedia Agenda Setting: An Analysis of Traditional, Partisan, and Emerging Online U.S. News</strong><br /><em>Abstract:</em> This large-scale intermedia agenda-setting analysis examines U.S. online media sources for 2015. The network agenda-setting model showed that media agendas were highly homogeneous and reciprocal. Online partisan media played a leading role in the entire media agenda. Two elite newspapers - The New York Times and The Washington Post - were found to no longer be in control of the news agenda and were more likely to follow online partisan media. This paper provides evidence for a nuanced view of the network agenda-setting model; intermedia agenda-setting effects varied by media type, issue type, and time periods.</p>
+        </blockquote>
+      </aside>
+      <p class="pdf-note">Flip through the JMCQ proof below (it opens on page 12 with the directed Granger intermedia network—use the PDF controls to page around the eigenvector and betweenness visuals).</p>
+      <div class="pdf-viewer">
+        <iframe src="network_analysis_phd_lecture_assets/assets/intermedia_networks/Vargo_Guo_2017_JMCQ_Proof.pdf#page=10" title="Networks, Big Data, and Intermedia Agenda Setting proof PDF"></iframe>
+      </div>
+      <figure class="figure-card">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/0/0d/Social_Network_Model_of_Relationships_in_the_Karate_Club.png" alt="Network diagram highlighting influential members of Zachary's Karate Club">
+        <figcaption>Highly connected members act as hubs, while brokers lie on paths bridging factions.</figcaption>
+      </figure>
+      <details class="code-toggle"><summary>Show R code: centrality on the Karate network</summary>
+        <p>Calculate and inspect multiple centrality scores on the same graph.</p>
+        <pre class="code-block"><code class="language-r">library(igraph)
+
+karate &lt;- make_graph("Zachary")
+results &lt;- data.frame(
+  node = V(karate)$name,
+  degree = degree(karate),
+  betweenness = betweenness(karate),
+  closeness = closeness(karate),
+  eigenvector = eigen_centrality(karate)$vector,
+  pagerank = page_rank(karate)$vector
+)
+head(results)
+</code></pre>
+      </details>
+      <div id="centrality-vis" class="network-stage" aria-label="Interactive toy network"></div>
+      <div id="centrality-controls" class="sandbox">
+        <div class="sandbox-header">
+          <span class="sandbox-label">Interactive</span>
+          <h3>Mention-style centrality explorer</h3>
+          <p class="viz-note">Top nodes by selected centrality (toy example).</p>
+        </div>
+        <div class="viz-controls">
+          <label for="centrality-scale-select">Node size encodes
+            <select id="centrality-scale-select">
+              <option value="degree" selected>Degree</option>
+              <option value="betweenness">Betweenness</option>
+              <option value="closeness">Closeness</option>
+            </select>
+          </label>
+          <label class="viz-checkbox">
+            <input type="checkbox" id="centrality-highlight-top">
+            Highlight top 2 nodes
+          </label>
+        </div>
+        <div class="table-wrap">
+          <table id="centrality-summary-table" class="data-table">
+            <thead>
+              <tr><th>Node</th><th>Metric value</th></tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+      <p class="viz-note">Interactive mention-style network: choose which centrality drives node size and optionally highlight top nodes; color still denotes a hypothetical content cluster. Hover to see betweenness and closeness scores.</p>
+    </section>
+
+    <section id="patterns" class="section-block">
+      <h2>Network Patterns and Models</h2>
+      <p class="section-lead">Simulated graphs help you distinguish whether observed structure is meaningful.</p>
+      <ul>
+        <li><strong><span class="term" data-tooltip="An Erdős–Rényi random graph connects pairs of nodes independently with a fixed probability p.">Erdős–Rényi</span>:</strong> each edge appears with probability <em>p</em>; degrees are roughly Poisson.</li>
+        <li><strong><span class="term" data-tooltip="A small-world network combines short path lengths with high clustering, like social networks where friends of friends know each other.">Small-world</span>:</strong> high clustering plus short paths thanks to occasional rewired edges.</li>
+        <li><strong><span class="term" data-tooltip="Scale-free networks have a few highly connected hubs and many nodes with few links, often following a power-law degree distribution.">Scale-free</span>:</strong> preferential attachment creates hubs; degree distribution follows a power law.</li>
+      </ul>
+      <p>These toy models echo patterns found in the communication networks we study:</p>
+      <ul>
+        <li>The international news-flow network in <em>Global Intermedia Agenda Setting</em> is not a pure random graph; stronger, wealthier countries behave more like hubs, closer to a scale-free pattern where a few nodes attract many ties.</li>
+        <li>In <em>Networks, Big Data, and Intermedia Agenda Setting</em>, the U.S. online media network also shows hub-like behavior, with certain online partisan outlets occupying high-degree, high-eigenvector positions that link traditional, partisan, and emerging outlets.</li>
+      </ul>
+      <p>By simulating random, small-world, or scale-free graphs and then comparing them to real networks from these studies, you can see which structural features are likely meaningful rather than just noise.</p>
+      <div id="models-playground" class="sandbox">
+        <div class="sandbox-header">
+          <span class="sandbox-label">Playground</span>
+          <h3>Sample different network models</h3>
+          <p class="viz-note">Use small graphs (10–40 nodes) to feel the differences in degree, clustering, and path length.</p>
+        </div>
+        <div class="viz-controls models-controls">
+          <label>
+            Model
+            <select id="model-type">
+              <option value="erdos">Random (Erdős–Rényi)</option>
+              <option value="smallworld">Small-world</option>
+              <option value="scalefree">Scale-free</option>
+            </select>
+          </label>
+          <label>
+            Nodes
+            <input type="number" id="model-n" min="10" max="40" value="20">
+          </label>
+          <label data-param="p" class="model-param">
+            p (edge prob)
+            <input type="number" id="model-p" min="0.02" max="0.3" step="0.01" value="0.08">
+          </label>
+          <label data-param="k" class="model-param" style="display:none;">
+            k (neighbors)
+            <input type="number" id="model-k" min="1" max="8" step="1" value="2">
+          </label>
+          <label data-param="beta" class="model-param" style="display:none;">
+            β (rewire)
+            <input type="number" id="model-beta" min="0" max="1" step="0.05" value="0.05">
+          </label>
+          <label data-param="m" class="model-param" style="display:none;">
+            m (edges per new node)
+            <input type="number" id="model-m" min="1" max="5" step="1" value="2">
+          </label>
+          <button type="button" id="model-generate">Generate network</button>
+        </div>
+        <div id="model-network-vis" class="network-stage" style="height:360px;"></div>
+        <div id="model-metrics" class="viz-metrics"></div>
+      </div>
+      <details class="code-toggle"><summary>Show R code: comparing synthetic networks</summary>
+        <p>Generate three canonical models and plot them side by side.</p>
+        <pre class="code-block"><code class="language-r">library(igraph)
+set.seed(123)
+
+random_g &lt;- sample_gnp(n = 40, p = 0.08)
+smallworld_g &lt;- sample_smallworld(1, 40, nei = 2, p = 0.05)
+scalefree_g &lt;- sample_pa(40, power = 1)
+
+par(mfrow = c(1,3))
+plot(random_g, vertex.size = 5, vertex.label = NA, main = "Random")
+plot(smallworld_g, vertex.size = 5, vertex.label = NA, main = "Small-world")
+plot(scalefree_g, vertex.size = 5, vertex.label = NA, main = "Scale-free")
+par(mfrow = c(1,1))
+</code></pre>
+      </details>
+      <p>Empirical anchor: in a U.S. news agenda network, online partisan outlets exhibited heavy-tailed degree and high eigenvector scores, acting as hubs between mainstream and emerging media.</p>
+    </section>
+
+    <section id="communities" class="section-block">
+      <h2>Communities and Clustering</h2>
+      <p class="section-lead"><span class="term" data-tooltip="A community in a network is a group of nodes more densely connected to each other than to the rest of the network.">Community</span> detection reveals blocs of mutually reinforcing nodes—audiences, topics, or geopolitical regions.</p>
+      <p class="pdf-note">Flip through the full article below (it opens on the page shown above—use the PDF controls to move between pages).</p>
+      <div class="pdf-viewer">
+        <iframe src="network_analysis_phd_lecture_assets/assets/global_newsflow/Guo_Vargo_2017_JoC_Global_Intermedia.pdf#page=17" title="Global Intermedia Agenda Setting article"></iframe>
+      </div>
+    <p>This visualization is drawn from <em>Global Intermedia Agenda Setting</em>, which uses 4,708 online news sources from 67 countries in 2015. Community detection makes the abstract idea of “core” and “semi-peripheral” countries visible: blocs emerge where countries’ media repeatedly influence one another’s coverage of world events.</p>
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead><tr><th>Media mode</th><th>Top agenda setters (% of issues influenced)</th></tr></thead>
+          <tbody>
+            <tr><td>All online</td><td>United States 33, Saudi Arabia 30, China 29</td></tr>
+            <tr><td>Emerging</td><td>United States 19, Saudi Arabia 15, Ireland 13</td></tr>
+            <tr><td>Traditional</td><td>United States 19, China 17, India 16</td></tr>
+          </tbody>
+        </table>
+      </div>
+    <details class="code-toggle"><summary>Show R code: Louvain on Karate Club</summary>
+      <p>Apply the Louvain algorithm to find two factions within the club.</p>
+      <pre class="code-block"><code class="language-r">library(igraph)
+
+karate &lt;- make_graph("Zachary")
+communities &lt;- cluster_louvain(karate)
+modularity(communities)
+plot(communities, karate, main = "Karate Club communities")
+</code></pre>
+    </details>
+    </section>
+
+    <section id="applied" class="section-block">
+      <h2>Applied Example: Mention and Semantic Networks</h2>
+      <p class="section-lead">This vignette ties together issue co-occurrence, mention graphs, and the Network Agenda Setting (NAS) research program built with Lei Guo.</p>
+    <h3>Mention network</h3>
+    <p>A toy dataset of civic users mentioning transit services illustrates how to track cross-brand engagement.</p>
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead><tr><th>From</th><th>To</th><th>Mentions</th></tr></thead>
+          <tbody>
+            <tr><td>@civicscholar</td><td>@MetroTransit</td><td>3</td></tr>
+            <tr><td>@policywonk</td><td>@MetroTransit</td><td>2</td></tr>
+            <tr><td>@policywonk</td><td>@BikeCollective</td><td>1</td></tr>
+            <tr><td>@urbanyogi</td><td>@BikeCollective</td><td>2</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div id="edge-scratchpad" class="sandbox">
+        <div class="sandbox-header">
+          <span class="sandbox-label">Try it</span>
+          <h3>Paste or edit a tiny mention network</h3>
+          <p class="viz-note">Each line is “from,to,weight”. Click draw to see the network and basic degree stats.</p>
+        </div>
+        <div class="viz-scratch-layout">
+          <div class="viz-scratch-input">
+            <label for="edge-input" class="sr-only">Edge list input</label>
+            <textarea id="edge-input" rows="6">@civicscholar,@MetroTransit,3
+@policywonk,@MetroTransit,2
+@policywonk,@BikeCollective,1
+@urbanyogi,@BikeCollective,2
+</textarea>
+            <button type="button" id="edge-draw">Draw network</button>
+            <div id="edge-errors" class="viz-errors" aria-live="polite"></div>
+          </div>
+          <div class="viz-scratch-vis">
+            <div id="edge-scratch-vis" class="network-stage" style="height:260px;"></div>
+            <div id="edge-stats" class="viz-metrics"></div>
+          </div>
+        </div>
+      </div>
+    <h3>Semantic network</h3>
+    <p>Toy issue co-occurrences mimic the <em>economy–jobs</em> clusters uncovered in election Twitter data.</p>
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead><tr><th>Issue A</th><th>Issue B</th><th>Count</th></tr></thead>
+          <tbody>
+            <tr><td>Economy</td><td>Jobs</td><td>12</td></tr>
+            <tr><td>Economy</td><td>Inflation</td><td>9</td></tr>
+            <tr><td>Healthcare</td><td>Costs</td><td>11</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Scaling up, NAS studies compared daily issue networks among supporters, mainstream media, and partisan outlets. Quadratic Assignment Procedure (<span class="term" data-tooltip="QAP (Quadratic Assignment Procedure) is a permutation-based method for testing correlations or regressions between networks.">QAP</span>) correlations above 0.9 showed strong agenda transfer.</p>
+    <p>Those high QAP correlations and issue clusters are not hypothetical. They mirror the empirical patterns in <em>Network Issue Agendas on Twitter</em> and <em>The Power of Message Networks</em>, where millions of 2012 election tweets reveal how supporters and media share tightly coupled issue networks and how candidates come to “own” entire constellations of topics.</p>
+      <aside class="callout callout--research">
+        <div class="callout-label">Results</div>
+        <div class="callout-title">QAP correlations (tweets about Obama)</div>
+        <div class="table-wrap">
+          <table class="data-table">
+            <caption>QAP correlations (tweets about Obama)</caption>
+            <thead><tr><th></th><th>Supporters</th><th>Vertical media</th><th>Democratic media</th><th>Republican media</th></tr></thead>
+            <tbody>
+              <tr><td>Supporters</td><td>—</td><td>0.756*</td><td>0.719*</td><td>0.861*</td></tr>
+              <tr><td>Vertical media</td><td>0.756*</td><td>—</td><td>0.912**</td><td>0.916**</td></tr>
+              <tr><td>Democratic media</td><td>0.719*</td><td>0.912**</td><td>—</td><td>0.889**</td></tr>
+              <tr><td>Republican media</td><td>0.861*</td><td>0.916**</td><td>0.889**</td><td>—</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </aside>
+      <aside class="callout callout--research">
+        <div class="callout-label">Results</div>
+        <div class="callout-title">QAP correlations (tweets about Romney)</div>
+        <div class="table-wrap">
+          <table class="data-table">
+            <caption>QAP correlations (tweets about Romney)</caption>
+            <thead><tr><th></th><th>Supporters</th><th>Vertical media</th><th>Democratic media</th><th>Republican media</th></tr></thead>
+            <tbody>
+              <tr><td>Supporters</td><td>—</td><td>0.906*</td><td>0.843*</td><td>0.892*</td></tr>
+              <tr><td>Vertical media</td><td>0.906*</td><td>—</td><td>0.945**</td><td>0.974**</td></tr>
+              <tr><td>Democratic media</td><td>0.843*</td><td>0.945**</td><td>—</td><td>0.924**</td></tr>
+              <tr><td>Republican media</td><td>0.892*</td><td>0.974**</td><td>0.924**</td><td>—</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </aside>
+      <p class="pdf-note">Flip through the full <em>Power of Message Networks</em> article below (it opens on page 15 with the associative issue-ownership network figures—use the PDF controls to explore the other semantic clusters and tables).</p>
+      <div class="pdf-viewer">
+        <iframe src="network_analysis_phd_lecture_assets/assets/guo_vargo_2015/Guo_Vargo_2015_Power_of_Message_Networks.pdf#page=15" title="The Power of Message Networks article PDF"></iframe>
+      </div>
+      <figure class="figure-card">
+      <img src="network_analysis_phd_lecture_assets/assets/network_agenda_setting/Twitter_Election_Obama_supporters_period1.png" alt="Obama supporter issue network highlighting key pairs">
+      <figcaption>Supporters associated Obama with energy, healthcare, and foreign affairs clusters.</figcaption>
+      </figure>
+      <figure class="figure-card">
+      <img src="network_analysis_phd_lecture_assets/assets/network_agenda_setting/Twitter_Election_Romney_supporters_period1.png" alt="Romney supporter issue network highlighting tax-focused ties">
+      <figcaption>Romney supporters tied tax to budget, jobs, and economy, underscoring frame differences.</figcaption>
+      </figure>
+      <figure class="figure-card">
+      <img src="network_analysis_phd_lecture_assets/assets/social_media_network_analysis/ForceAtlas2_Qualitative_Topic_page1.png" alt="ForceAtlas2 map of strategic communication co-citation clusters">
+      <figcaption>Strategic-communication scholarship clusters into diffusion, marketing, networks, and methods—the intellectual context for applied network work.</figcaption>
+      </figure>
+    <p>Here, community detection doesn’t just show which articles cite one another; it surfaces entire subfields—diffusion, marketing, networks, and methods—that form the intellectual backdrop for the agenda-setting and network studies you’ve seen above.</p>
+      <aside class="callout callout--research">
+        <div class="callout-label">Study spotlight</div>
+        <p class="callout-title">Vargo, C. J., Guo, L., McCombs, M., &amp; Shaw, D. (2014). Network Issue Agendas on Twitter. <em>Journal of Communication</em>.</p>
+        <p><strong>Big question.</strong> During the 2012 U.S. presidential election, do mainstream media, niche media, and campaign supporters share similar issue networks, or do they talk past each other?</p>
+        <p><strong>Data.</strong> Millions of tweets from citizens and news organizations during the 2012 campaign, coded for election issues.</p>
+        <p><strong>Why network analysis?</strong> Issues become nodes and their co-occurrences become edges, enabling tests of agenda-melding, comparisons of central issues across groups, and QAP correlations across entire issue structures.</p>
+        <blockquote>
+          <p><strong>Network Issue Agendas on Twitter during the 2012 U.S. Presidential Election</strong><br /><em>Abstract:</em> There was considerable discussion on Twitter by citizens and news organizations during the 2012 U.S. presidential election. This study analyzes the salience of election issues on Twitter through the concepts of agendamelding, the Network Agenda Setting Model and selective exposure. The results show that the network issue agendas for mainstream horizontal media, niche vertical media and campaign supporters all correlate highly. Patterns of issue centrality were highly similar across different media and campaign supporters. The most central issues were the economy, foreign policy and individual liberties in all the networks. Although little evidence of selective exposure was found, network agenda setting and inter-media agenda setting effects occurred across the campaign. Notably, the mainstream vertical media influenced the niche horizontal media and candidate supporters early in the campaign, but horizontal media exerted more influence as the election drew nearer. However, many of the relationships among the agendas are reciprocal. This reciprocal influence between the network issue agendas of the candidate supporters and media over time, along with the high correlations between the network issue agendas of the candidate supporters and media, suggests that citizens meld their agendas from many sources with no single source dominating.</p>
+        </blockquote>
+      </aside>
+      <aside class="callout callout--research">
+        <div class="callout-label">Study spotlight</div>
+        <p class="callout-title">Guo, L., &amp; Vargo, C. J. (2015). The Power of Message Networks. <em>Mass Communication &amp; Society</em>.</p>
+        <p><strong>Big question.</strong> Can news media shape how the public links candidates to not just individual issues but whole clusters of issues—“issue ownership networks”?</p>
+        <p><strong>Data.</strong> A large Twitter corpus from the 2012 U.S. presidential election connecting candidates to the issues that appear with them.</p>
+        <p><strong>Why network analysis?</strong> Representing candidates and issues in a single message network reveals which issues cluster around each candidate and how media coverage structures those ownership patterns.</p>
+        <blockquote>
+          <p><strong>The Power of Message Networks: A Big-Data Analysis of the Network Agenda Setting Model and Issue Ownership</strong><br /><em>Abstract:</em> This paper presents an empirical study that tests a new concept, "issue ownership network," which is based on the Network Agenda Setting (NAS) Model and the theory of issue ownership. Big data analytics and semantic network analysis were used to examine the large data set collected on Twitter during the 2012 U.S. presidential election. Results showed that the news media could determine the public's identification of a political candidate with not just individual issues, but also entire networks of issues. Here we argue that traditional news media still set the public agenda in this new media environment and do so in ways more complicated through constructing message networks. The study also demonstrates that the NAS model and its unique focus can potentially enrich the understanding of other communication and social science theories and concepts.</p>
+        </blockquote>
+      </aside>
+    </section>
+
+    <section id="regression" class="section-block">
+      <h2>Networks and Regression</h2>
+      <p class="section-lead">Network measures can become features in regression models, but dependence requires care.</p>
+    <ul>
+      <li><strong>Node-level outcomes:</strong> Use degree, betweenness, or community membership to predict adoption, turnout, or sentiment.</li>
+      <li><strong>Network-level comparisons:</strong> Use permutation tests such as QAP to relate matrices directly.</li>
+      <li><strong>Dependence warning:</strong> Correlated errors arise because connected nodes share neighbors; mention this in any model write-up.</li>
+    </ul>
+      <aside class="callout callout--concept">
+        <div class="callout-label">Modeling note</div>
+        <p>Network measures like degree, betweenness, or community membership can be used as predictors in regression models, but you must handle dependence carefully.</p>
+      </aside>
+      <details class="code-toggle"><summary>Show R code: logistic regression with degree</summary>
+        <p>Simulate a random graph, compute degree, and regress a synthetic adoption outcome.</p>
+        <pre class="code-block"><code class="language-r">library(igraph)
+set.seed(42)
+
+g &lt;- sample_gnp(30, p = 0.12)
+deg &lt;- degree(g)
+adopt_prob &lt;- plogis(-1 + 0.15 * deg)
+adopted &lt;- rbinom(30, 1, adopt_prob)
+
+model &lt;- glm(adopted ~ deg, family = binomial)
+summary(model)
+</code></pre>
+      </details>
+      <p>In large NAS studies like <em>Network Issue Agendas on Twitter</em>, <em>The Power of Message Networks</em>, and <em>Networks, Big Data, and Intermedia Agenda Setting</em>, Quadratic Assignment Procedure (<span class="term" data-tooltip="QAP (Quadratic Assignment Procedure) is a permutation-based method for testing correlations or regressions between networks.">QAP</span>) regressions handled dependence by permuting rows and columns of adjacency matrices, mirroring the logic of node-level robustness checks.</p>
+    </section>
+
+    <section id="pitfalls" class="section-block">
+      <h2>Pitfalls and Practical Issues</h2>
+      <p class="section-lead">Keep these cautions in mind when designing or interpreting network studies.</p>
+      <aside class="callout callout--warning pitfalls-card">
+        <div class="callout-label">Pitfalls checklist</div>
+        <ul class="pitfall-list">
+          <li><span class="pitfall-icon">⛔</span><strong>Boundary specification.</strong> Define time windows, platforms, and actors upfront.</li>
+          <li><span class="pitfall-icon">⚠️</span><strong>Missing edges.</strong> API limits or recall errors bias density; document data coverage.</li>
+          <li><span class="pitfall-icon">⏱️</span><strong>Directionality &amp; time.</strong> Static snapshots can hide temporal causality; use time slices when possible.</li>
+          <li><span class="pitfall-icon">🔁</span><strong>Causality.</strong> Centrality correlates with outcomes but may reflect underlying traits rather than influence.</li>
+          <li><span class="pitfall-icon">🧼</span><strong>Data hygiene.</strong> Deduplicate entities and standardize encodings before building graphs.</li>
+        </ul>
+      </aside>
+      <figure class="figure-card">
+      <img src="network_analysis_phd_lecture_assets/assets/fake_news/FakeNews_Granger_Network_2016_page1.png" alt="Granger-causality network showing relationships among fake news, partisan media, and fact-checkers">
+      <figcaption>Fake-news sites produced heavy volumes between 2014-2016, but Granger networks showed they operated inside partisan clusters rather than dominating the agenda.</figcaption>
+      </figure>
+    <p>These figures are drawn from <em>The Agenda-Setting Power of Fake News</em>, which combines 2014-2016 online media and fact-checker datasets to show that fake news is deeply embedded inside partisan media clusters rather than sitting alone at the center of the agenda.</p>
+      <aside class="callout callout--research">
+        <div class="callout-label">Study spotlight</div>
+        <p class="callout-title">Vargo, C. J., Guo, L., &amp; Amazeen, M. (2018). The Agenda-Setting Power of Fake News. <em>New Media &amp; Society</em>.</p>
+        <p><strong>Big question.</strong> Do fake news sites dominate the online news agenda, or are they embedded within a larger partisan and emerging media ecosystem—and how much influence do fact-checkers have?</p>
+        <p><strong>Data.</strong> Online media and fact-checker datasets from 2014 to 2016 spanning fake news, partisan outlets, emerging media, and fact-checkers.</p>
+        <p><strong>Why network analysis?</strong> Building networks of agenda-setting influence among outlet types pinpoints where fake news sits relative to partisan and emerging media and traces how issue agendas move between misinformation, mainstream coverage, and fact-checking.</p>
+        <blockquote>
+          <p><strong>The Agenda-Setting Power of Fake News: A Big Data Analysis of the Online Media Landscape from 2014 to 2016</strong><br /><em>Abstract:</em> This study examines the agenda-setting power of fake news and fact-checkers who fight them through a computational look at the online mediascape from 2014 to 2016. Although the study confirms that content from fake news websites is increasing, these sites do not exert excessive power. Instead, fake news has an intricately entwined relationship with online partisan media, both responding and setting its issue agenda. In 2016, partisan media appeared to be especially susceptible to the agendas of fake news, perhaps due to the election. Emerging news media are also responsive to the agendas of fake news, but to a lesser degree. Fake news coverage itself is diverging and becoming more autonomous topically. While fact-checkers are autonomous in their selection of issues to cover, they were not influential in determining the agenda of news media overall, and their influence appears to be declining, illustrating the difficulties fact-checkers face in disseminating their corrections.</p>
+        </blockquote>
+      </aside>
+      <p class="pdf-note">Flip through the full <em>New Media &amp; Society</em> article below (it opens on page 15 with Table 3’s weighted indegree/outdegree summary—use the PDF controls to hop to the surrounding Granger results and discussion).</p>
+      <div class="pdf-viewer">
+        <iframe src="network_analysis_phd_lecture_assets/assets/fake_news/Vargo_Guo_Amazeen_2018_FinalProof.pdf#page=9" title="The Agenda-Setting Power of Fake News article PDF"></iframe>
+      </div>
+      <aside class="callout callout--research">
+        <div class="callout-label">Results</div>
+        <div class="callout-title">Key Granger findings (Trump coverage)</div>
+        <div class="table-wrap">
+          <table class="data-table">
+            <caption>Key Granger findings (Trump coverage)</caption>
+            <thead><tr><th>Relationship</th><th>Issues predicted</th><th>Notes</th></tr></thead>
+            <tbody>
+              <tr><td>Misinformation → fact-based media</td><td>2</td><td>Positive and negative affect transfer</td></tr>
+              <tr><td>Fact-based → misinformation</td><td>17</td><td>Shows mainstream agenda leadership</td></tr>
+              <tr><td>Misinformation → partisan media</td><td>9</td><td>Bridges within ideological ecosystems</td></tr>
+              <tr><td>Emerging media → misinformation</td><td>17</td><td>Online natives amplify fringe narratives</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </aside>
+    </section>
+
+    <section id="check" class="section-block">
+      <h2>Check Your Understanding</h2>
+      <p class="section-lead">Use these short prompts to review key ideas. Expand each card to reveal the answer.</p>
+      <div class="qa-list">
+        <details class="qa-item">
+          <summary>Q1. Which centrality best captures a user who mentions many brands but does not bridge communities?</summary>
+          <p>Degree (out-degree) measures broad reach even without brokerage.</p>
+        </details>
+        <details class="qa-item">
+          <summary>Q2. How do you obtain an issue co-occurrence network from a <span class="term" data-tooltip="A bipartite graph has two types of nodes, such as issues and articles, with edges only running between types.">bipartite graph</span> issue-by-article matrix?</summary>
+          <p>Project the bipartite graph onto the issue mode so two issues connect when they appear in the same article.</p>
+        </details>
+        <details class="qa-item">
+          <summary>Q3. Why is density insufficient for judging diffusion speed?</summary>
+          <p>Sparse networks can still have short paths if a few shortcuts exist, so examine path length or closeness.</p>
+        </details>
+        <details class="qa-item">
+          <summary>Q4. What regression caveat should accompany any model using network measures as predictors?</summary>
+          <p>Mention that network dependence violates iid errors and motivates resampling or robust SEs.</p>
+        </details>
+        <details class="qa-item">
+          <summary>Q5. When is the clustering coefficient more informative than degree?</summary>
+          <p>When you care about triadic closure—e.g., semantic triples like climate–energy–jobs forming cohesive frames.</p>
+        </details>
+      </div>
+    </section>
+
+    <footer class="page-footer">
+      <p>Network Analysis · PhD Methods · Lecture Notes</p>
+      <p class="page-footer-meta">Adapted from research by Vargo, Guo, and collaborators.</p>
+    </footer>
+  </main>
+</div>
+<button class="back-to-top" type="button" aria-label="Back to top">↑</button>
+<script>
+// Toy agenda-setting network for the centrality playground.
+const strategicNetworkData = {
+  nodes: [
+    {id: 1, label: "Civic News", group: "Civic", degree: 6, betweenness: 0.2, closeness: 0.55},
+    {id: 2, label: "Metro Transit", group: "Brand", degree: 8, betweenness: 0.35, closeness: 0.60},
+    {id: 3, label: "Policy Hub", group: "Civic", degree: 5, betweenness: 0.31, closeness: 0.52},
+    {id: 4, label: "City Coffee", group: "Brand", degree: 4, betweenness: 0.12, closeness: 0.48},
+    {id: 5, label: "Equity Forum", group: "Advocacy", degree: 7, betweenness: 0.28, closeness: 0.58},
+    {id: 6, label: "Bike Collective", group: "Brand", degree: 6, betweenness: 0.24, closeness: 0.50}
+  ],
+  edges: [
+    {from: 1, to: 2}, {from: 1, to: 5}, {from: 2, to: 3}, {from: 2, to: 4},
+    {from: 3, to: 5}, {from: 3, to: 6}, {from: 4, to: 6}, {from: 5, to: 6}
+  ]
+};
+
+// Small media network reused for the representation toggles.
+const representationToy = {
+  nodes: ['Journalists', 'Campaigns', 'Voters'],
+  edges: [
+    {from: 'Journalists', to: 'Campaigns', weight: 2},
+    {from: 'Journalists', to: 'Voters', weight: 1},
+    {from: 'Campaigns', to: 'Voters', weight: 3}
+  ]
+};
+
+// Build the interactive centrality viewer controls and behaviors.
+function initCentralityVis() {
+  const container = document.getElementById('centrality-vis');
+  const select = document.getElementById('centrality-scale-select');
+  const highlightToggle = document.getElementById('centrality-highlight-top');
+  const summaryBody = document.querySelector('#centrality-summary-table tbody');
+  if (!container || typeof vis === 'undefined') return;
+  const colorMap = { Civic: '#ffd166', Brand: '#118ab2', Advocacy: '#06d6a0' };
+  const nodesDataset = new vis.DataSet(
+    strategicNetworkData.nodes.map(node => ({
+      id: node.id,
+      label: node.label,
+      group: node.group,
+      degree: node.degree,
+      betweenness: node.betweenness,
+      closeness: node.closeness,
+      baseColor: colorMap[node.group] || '#8d99ae',
+      value: 12,
+      borderWidth: 1.6,
+      color: {
+        background: colorMap[node.group] || '#8d99ae',
+        border: '#2f3545'
+      },
+      title: ''
+    }))
+  );
+  const edgesDataset = new vis.DataSet(strategicNetworkData.edges);
+  const network = new vis.Network(container, { nodes: nodesDataset, edges: edgesDataset }, {
+    nodes: {
+      shape: 'dot',
+      scaling: { min: 10, max: 48 },
+      font: { color: '#f8fafc', face: 'Inter' }
+    },
+    edges: {
+      color: { color: '#f8fafc', highlight: '#ffffff' }
+    },
+    physics: {
+      stabilization: { iterations: 200 },
+      solver: 'forceAtlas2Based',
+      forceAtlas2Based: { damping: 0.9 }
+    },
+    interaction: { tooltipDelay: 40, hover: true }
+  });
+  let currentMetric = (select && select.value) || 'degree';
+  function formatScore(value) {
+    return Number(value).toFixed(2);
+  }
+  function formatTitle(node) {
+    return `${node.label}\nDegree: ${node.degree}\nBetweenness: ${formatScore(node.betweenness)}\nCloseness: ${formatScore(node.closeness)}`;
+  }
+  function computeNodeValue(node, metric) {
+    const raw = Number(node[metric]) || 0;
+    if (metric === 'degree') {
+      return 12 + raw * 2.8;
+    }
+    return 12 + raw * 55;
+  }
+  function applyMetric(metric) {
+    const highlight = highlightToggle && highlightToggle.checked;
+    const nodesArray = nodesDataset.get();
+    const sorted = nodesArray.slice().sort((a, b) => (b[metric] - a[metric]));
+    const topIds = highlight ? sorted.slice(0, 2).map(node => node.id) : [];
+    const updates = nodesArray.map(node => {
+      const baseValue = computeNodeValue(node, metric);
+      const isTop = topIds.includes(node.id);
+      return {
+        id: node.id,
+        value: isTop ? baseValue + 5 : baseValue,
+        borderWidth: isTop ? 4 : 1.6,
+        color: {
+          background: node.baseColor || colorMap[node.group] || '#8d99ae',
+          border: isTop ? '#ef476f' : '#2f3545'
+        },
+        title: formatTitle(node)
+      };
+    });
+    nodesDataset.update(updates);
+    network.redraw();
+  }
+  function updateCentralitySummary(metric) {
+    if (!summaryBody) return;
+    const nodesArray = nodesDataset.get();
+    const sorted = nodesArray.slice().sort((a, b) => (b[metric] - a[metric]));
+    const topFive = sorted.slice(0, 5);
+    summaryBody.innerHTML = topFive.map(node => {
+      const value = metric === 'degree' ? node[metric] : Number(node[metric]).toFixed(3);
+      return `<tr><td>${node.label}</td><td>${value}</td></tr>`;
+    }).join('');
+  }
+  function handleMetricChange() {
+    currentMetric = (select && select.value) || currentMetric || 'degree';
+    updateCentralitySummary(currentMetric);
+    applyMetric(currentMetric);
+  }
+  if (select) {
+    select.addEventListener('change', handleMetricChange);
+  }
+  if (highlightToggle) {
+    highlightToggle.addEventListener('change', () => applyMetric(currentMetric));
+  }
+  handleMetricChange();
+}
+
+// Toggle between edge list / adjacency representations inline.
+function initRepresentationPlayground() {
+  const playground = document.getElementById('representation-playground');
+  const output = document.getElementById('representation-output');
+  if (!playground || !output) return;
+  const toggles = playground.querySelectorAll('.rep-toggle');
+  function buildEdgeList() {
+    const rows = representationToy.edges.map(edge => `<tr><td>${edge.from}</td><td>${edge.to}</td><td>${edge.weight}</td></tr>`).join('');
+    return `<div class="table-wrap"><table class="data-table"><thead><tr><th>From</th><th>To</th><th>Weight</th></tr></thead><tbody>${rows}</tbody></table></div>`;
+  }
+  function buildAdjacencyMatrix() {
+    const nodes = representationToy.nodes;
+    const matrix = nodes.map(() => nodes.map(() => 0));
+    representationToy.edges.forEach(edge => {
+      const i = nodes.indexOf(edge.from);
+      const j = nodes.indexOf(edge.to);
+      if (i >= 0 && j >= 0) {
+        matrix[i][j] = edge.weight;
+        matrix[j][i] = edge.weight;
+      }
+    });
+    const header = nodes.map(node => `<th scope="col">${node}</th>`).join('');
+    const body = nodes.map((node, idx) => {
+      const cells = nodes.map((_, colIdx) => `<td>${matrix[idx][colIdx]}</td>`).join('');
+      return `<tr><th scope="row">${node}</th>${cells}</tr>`;
+    }).join('');
+    return `<div class="table-wrap"><table class="data-table"><thead><tr><th></th>${header}</tr></thead><tbody>${body}</tbody></table></div>`;
+  }
+  function buildAdjacencyList() {
+    const adjacency = new Map();
+    representationToy.nodes.forEach(node => adjacency.set(node, []));
+    representationToy.edges.forEach(edge => {
+      adjacency.get(edge.from).push({ node: edge.to, weight: edge.weight });
+      adjacency.get(edge.to).push({ node: edge.from, weight: edge.weight });
+    });
+    const rows = representationToy.nodes.map(node => {
+      const neighbors = adjacency.get(node);
+      const values = neighbors.length ? neighbors.map(n => `${n.node} (${n.weight})`).join(', ') : '—';
+      return `<li><strong>${node}</strong> → ${values}</li>`;
+    }).join('');
+    return `<ul class="adj-list">${rows}</ul>`;
+  }
+  function renderRepresentation(type) {
+    if (type === 'adj-matrix') {
+      output.innerHTML = buildAdjacencyMatrix();
+    } else if (type === 'adj-list') {
+      output.innerHTML = buildAdjacencyList();
+    } else {
+      output.innerHTML = buildEdgeList();
+    }
+  }
+  function setActive(rep) {
+    toggles.forEach(btn => {
+      if (btn.dataset.rep === rep) {
+        btn.classList.add('active');
+      } else {
+        btn.classList.remove('active');
+      }
+    });
+    renderRepresentation(rep);
+  }
+  toggles.forEach(btn => {
+    btn.addEventListener('click', () => setActive(btn.dataset.rep));
+  });
+  setActive('edge-list');
+}
+
+// Lightweight network model playground (random, small-world, scale-free).
+function initModelsPlayground() {
+  const playground = document.getElementById('models-playground');
+  if (!playground || typeof vis === 'undefined') return;
+  const typeSelect = document.getElementById('model-type');
+  const nInput = document.getElementById('model-n');
+  const pInput = document.getElementById('model-p');
+  const kInput = document.getElementById('model-k');
+  const betaInput = document.getElementById('model-beta');
+  const mInput = document.getElementById('model-m');
+  const generateButton = document.getElementById('model-generate');
+  const paramLabels = playground.querySelectorAll('.model-param');
+  const visContainer = document.getElementById('model-network-vis');
+  const metricsContainer = document.getElementById('model-metrics');
+  let networkInstance = null;
+  const networkOptions = {
+    nodes: {
+      shape: 'dot',
+      size: 12,
+      font: { color: '#1f2937', face: 'Inter', size: 12 },
+      color: { border: '#4b5563', background: '#c7d2fe' }
+    },
+    edges: { color: { color: '#94a3b8' } },
+    physics: { stabilization: true, barnesHut: { damping: 0.35 } },
+    interaction: { hover: true }
+  };
+  function updateParamVisibility() {
+    const type = typeSelect ? typeSelect.value : 'erdos';
+    paramLabels.forEach(label => {
+      const param = label.getAttribute('data-param');
+      let show = false;
+      if (type === 'erdos' && param === 'p') show = true;
+      if (type === 'smallworld' && (param === 'k' || param === 'beta')) show = true;
+      if (type === 'scalefree' && param === 'm') show = true;
+      label.style.display = show ? 'flex' : 'none';
+    });
+  }
+  function clamp(value, min, max) {
+    if (Number.isNaN(value)) return min;
+    return Math.min(Math.max(value, min), max);
+  }
+  function renderModelNetwork(data) {
+    if (!visContainer) return;
+    if (!networkInstance) {
+      networkInstance = new vis.Network(visContainer, data, networkOptions);
+    } else {
+      networkInstance.setData(data);
+    }
+  }
+  function renderModelMetrics(metrics) {
+    if (!metricsContainer) return;
+    metricsContainer.innerHTML = `<div class="table-wrap">
+      <table class="data-table">
+        <tbody>
+          <tr><th>Nodes</th><td>${metrics.numNodes}</td></tr>
+          <tr><th>Edges</th><td>${metrics.numEdges}</td></tr>
+          <tr><th>Average degree</th><td>${metrics.avgDegree.toFixed(2)}</td></tr>
+          <tr><th>Density</th><td>${metrics.density.toFixed(3)}</td></tr>
+          <tr><th>Average path length</th><td>${metrics.avgPathLength.toFixed(2)}</td></tr>
+          <tr><th>Global clustering</th><td>${metrics.globalClustering.toFixed(3)}</td></tr>
+        </tbody>
+      </table>
+    </div>`;
+  }
+  function generateAndRender() {
+    if (!typeSelect || !nInput) return;
+    const type = typeSelect.value;
+    const n = clamp(parseInt(nInput.value, 10) || 10, 10, 40);
+    nInput.value = n;
+    let rawGraph;
+    if (type === 'smallworld') {
+      const maxK = Math.min(8, Math.floor((n - 1) / 2));
+      const k = clamp(parseInt(kInput && kInput.value, 10) || 2, 1, Math.max(1, maxK));
+      if (kInput) kInput.value = k;
+      const betaVal = clamp(parseFloat(betaInput && betaInput.value) || 0.05, 0, 1);
+      if (betaInput) betaInput.value = betaVal.toFixed(2);
+      rawGraph = generateSmallWorldGraph(n, k, betaVal);
+    } else if (type === 'scalefree') {
+      const maxM = Math.min(5, Math.max(1, n - 1));
+      const m = clamp(parseInt(mInput && mInput.value, 10) || 2, 1, maxM);
+      if (mInput) mInput.value = m;
+      rawGraph = generateScaleFreeGraph(n, m);
+    } else {
+      const p = clamp(parseFloat(pInput && pInput.value) || 0.08, 0.02, 0.3);
+      if (pInput) pInput.value = p.toFixed(2);
+      rawGraph = generateErdosRenyiGraph(n, p);
+    }
+    const data = {
+      nodes: new vis.DataSet(rawGraph.nodes),
+      edges: new vis.DataSet(rawGraph.edges)
+    };
+    renderModelNetwork(data);
+    renderModelMetrics(computeUndirectedMetrics(rawGraph));
+  }
+  if (typeSelect) {
+    typeSelect.addEventListener('change', () => {
+      updateParamVisibility();
+      generateAndRender();
+    });
+  }
+  if (generateButton) {
+    generateButton.addEventListener('click', generateAndRender);
+  }
+  updateParamVisibility();
+  generateAndRender();
+}
+
+// Random graph generators used by the model playground.
+function generateErdosRenyiGraph(n, p) {
+  const nodes = [];
+  const edges = [];
+  for (let i = 1; i <= n; i++) {
+    nodes.push({ id: i, label: String(i) });
+  }
+  for (let i = 1; i <= n; i++) {
+    for (let j = i + 1; j <= n; j++) {
+      if (Math.random() < p) {
+        edges.push({ from: i, to: j });
+      }
+    }
+  }
+  return { nodes, edges };
+}
+
+function generateSmallWorldGraph(n, k, beta) {
+  const nodes = Array.from({ length: n }, (_, idx) => ({ id: idx + 1, label: String(idx + 1) }));
+  const adjacency = Array.from({ length: n }, () => new Set());
+  const edges = [];
+  const baseEdges = [];
+  function addEdge(a, b) {
+    if (a === b) return;
+    if (adjacency[a].has(b)) return;
+    adjacency[a].add(b);
+    adjacency[b].add(a);
+    const edgeObj = { from: a + 1, to: b + 1 };
+    edges.push(edgeObj);
+    baseEdges.push({ from: a, to: b, ref: edgeObj });
+  }
+  for (let i = 0; i < n; i++) {
+    for (let offset = 1; offset <= k; offset++) {
+      const neighbor = (i + offset) % n;
+      addEdge(i, neighbor);
+    }
+  }
+  baseEdges.forEach(edge => {
+    if (Math.random() < beta) {
+      const { from, to, ref } = edge;
+      adjacency[from].delete(to);
+      adjacency[to].delete(from);
+      let newTarget;
+      let attempts = 0;
+      do {
+        newTarget = Math.floor(Math.random() * n);
+        attempts += 1;
+      } while ((newTarget === from || adjacency[from].has(newTarget)) && attempts < 100);
+      if (newTarget === from || adjacency[from].has(newTarget)) {
+        adjacency[from].add(to);
+        adjacency[to].add(from);
+        return;
+      }
+      adjacency[from].add(newTarget);
+      adjacency[newTarget].add(from);
+      ref.from = from + 1;
+      ref.to = newTarget + 1;
+    }
+  });
+  return { nodes, edges };
+}
+
+function generateScaleFreeGraph(n, m) {
+  const adjacency = new Map();
+  const degrees = new Map();
+  const nodes = [];
+  const edges = [];
+  function addNode(id) {
+    adjacency.set(id, new Set());
+    degrees.set(id, 0);
+    nodes.push({ id, label: String(id) });
+  }
+  const seedCount = Math.min(Math.max(m + 1, 3), n);
+  for (let i = 1; i <= seedCount; i++) {
+    addNode(i);
+  }
+  for (let i = 1; i <= seedCount; i++) {
+    for (let j = i + 1; j <= seedCount; j++) {
+      addUndirectedEdge(edges, adjacency, degrees, i, j);
+    }
+  }
+  let currentId = seedCount + 1;
+  while (currentId <= n) {
+    addNode(currentId);
+    const candidates = nodes.map(node => node.id).filter(id => id !== currentId);
+    const needed = Math.min(m, candidates.length);
+    const targets = new Set();
+    let guard = 0;
+    while (targets.size < needed && guard < 200) {
+      guard += 1;
+      const target = preferentialSelect(candidates, degrees, targets);
+      if (target == null) break;
+      if (addUndirectedEdge(edges, adjacency, degrees, currentId, target)) {
+        targets.add(target);
+      } else {
+        targets.add(target);
+      }
+    }
+    currentId += 1;
+  }
+  return { nodes, edges };
+}
+
+function addUndirectedEdge(edges, adjacency, degrees, a, b) {
+  if (a === b) return false;
+  if (!adjacency.has(a)) adjacency.set(a, new Set());
+  if (!adjacency.has(b)) adjacency.set(b, new Set());
+  if (adjacency.get(a).has(b)) return false;
+  adjacency.get(a).add(b);
+  adjacency.get(b).add(a);
+  if (degrees) {
+    degrees.set(a, (degrees.get(a) || 0) + 1);
+    degrees.set(b, (degrees.get(b) || 0) + 1);
+  }
+  edges.push({ from: a, to: b });
+  return true;
+}
+
+function preferentialSelect(candidates, degrees, excluded) {
+  const available = candidates.filter(id => !excluded.has(id));
+  if (!available.length) return null;
+  let totalWeight = 0;
+  available.forEach(id => {
+    totalWeight += (degrees.get(id) || 0) + 0.01;
+  });
+  let threshold = Math.random() * totalWeight;
+  for (const id of available) {
+    threshold -= ((degrees.get(id) || 0) + 0.01);
+    if (threshold <= 0) {
+      return id;
+    }
+  }
+  return available[available.length - 1];
+}
+
+// Approximate structural descriptors for small undirected graphs.
+function computeUndirectedMetrics(graph) {
+  const adjacency = new Map();
+  graph.nodes.forEach(node => adjacency.set(node.id, new Set()));
+  graph.edges.forEach(edge => {
+    if (!adjacency.has(edge.from)) {
+      adjacency.set(edge.from, new Set());
+    }
+    if (!adjacency.has(edge.to)) {
+      adjacency.set(edge.to, new Set());
+    }
+    adjacency.get(edge.from).add(edge.to);
+    adjacency.get(edge.to).add(edge.from);
+  });
+  const numNodes = graph.nodes.length;
+  const numEdges = graph.edges.length;
+  const avgDegree = numNodes ? (2 * numEdges) / numNodes : 0;
+  const density = numNodes > 1 ? (2 * numEdges) / (numNodes * (numNodes - 1)) : 0;
+  const nodeIds = graph.nodes.map(node => node.id);
+  let totalDistances = 0;
+  let reachablePairs = 0;
+  function bfs(start) {
+    const distances = new Map();
+    const queue = [start];
+    distances.set(start, 0);
+    while (queue.length) {
+      const current = queue.shift();
+      const dist = distances.get(current);
+      const neighbors = adjacency.get(current) || new Set();
+      neighbors.forEach(neighbor => {
+        if (!distances.has(neighbor)) {
+          distances.set(neighbor, dist + 1);
+          queue.push(neighbor);
+        }
+      });
+    }
+    return distances;
+  }
+  for (let i = 0; i < nodeIds.length; i++) {
+    const start = nodeIds[i];
+    const distances = bfs(start);
+    for (let j = i + 1; j < nodeIds.length; j++) {
+      const target = nodeIds[j];
+      if (distances.has(target)) {
+        totalDistances += distances.get(target);
+        reachablePairs += 1;
+      }
+    }
+  }
+  const avgPathLength = reachablePairs ? totalDistances / reachablePairs : 0;
+  let clusteringSum = 0;
+  let clusteringCount = 0;
+  adjacency.forEach(neighbors => {
+    const degree = neighbors.size;
+    if (degree < 2) return;
+    const neighborArr = Array.from(neighbors);
+    let closed = 0;
+    for (let i = 0; i < neighborArr.length; i++) {
+      for (let j = i + 1; j < neighborArr.length; j++) {
+        if (adjacency.get(neighborArr[i]) && adjacency.get(neighborArr[i]).has(neighborArr[j])) {
+          closed += 1;
+        }
+      }
+    }
+    const possible = (degree * (degree - 1)) / 2;
+    clusteringSum += closed / possible;
+    clusteringCount += 1;
+  });
+  const globalClustering = clusteringCount ? clusteringSum / clusteringCount : 0;
+  return {
+    numNodes,
+    numEdges,
+    avgDegree,
+    density,
+    avgPathLength,
+    globalClustering
+  };
+}
+
+// Allow students to paste an edge list and instantly visualize mentions.
+function initEdgeScratchpad() {
+  const scratchpad = document.getElementById('edge-scratchpad');
+  if (!scratchpad || typeof vis === 'undefined') return;
+  const textarea = document.getElementById('edge-input');
+  const drawButton = document.getElementById('edge-draw');
+  const errorsEl = document.getElementById('edge-errors');
+  const statsEl = document.getElementById('edge-stats');
+  const visContainer = document.getElementById('edge-scratch-vis');
+  let networkInstance = null;
+  const options = {
+    nodes: {
+      shape: 'dot',
+      scaling: { min: 12, max: 32 },
+      color: { background: '#fee090', border: '#1f2937', highlight: { background: '#ffd166', border: '#1f2937' } },
+      font: { size: 12, face: 'Inter', color: '#1f2937' }
+    },
+    edges: {
+      arrows: 'to',
+      color: { color: '#94a3b8' },
+      smooth: { type: 'dynamic' }
+    },
+    physics: { stabilization: true, barnesHut: { damping: 0.4 } },
+    interaction: { hover: true }
+  };
+  function renderDegreeStats(nodes, edges) {
+    if (!statsEl) return;
+    const stats = nodes.map(node => {
+      let out = 0;
+      let incoming = 0;
+      edges.forEach(edge => {
+        if (edge.from === node.id) out += 1;
+        if (edge.to === node.id) incoming += 1;
+      });
+      return { node: node.id, out, in: incoming, total: out + incoming };
+    });
+    stats.sort((a, b) => b.total - a.total || a.node.localeCompare(b.node));
+    statsEl.innerHTML = `<div class="table-wrap">
+      <table class="data-table">
+        <thead><tr><th>Node</th><th>Out-degree</th><th>In-degree</th></tr></thead>
+        <tbody>${stats.map(item => `<tr><td>${item.node}</td><td>${item.out}</td><td>${item.in}</td></tr>`).join('')}</tbody>
+      </table>
+    </div>`;
+  }
+  function drawNetwork() {
+    if (!textarea) return;
+    const lines = textarea.value.split('\n');
+    const nodeLabels = new Set();
+    const edges = [];
+    lines.forEach(rawLine => {
+      const line = rawLine.trim();
+      if (!line) return;
+      const parts = line.split(',').map(part => part.trim());
+      if (parts.length < 2) return;
+      const from = parts[0];
+      const to = parts[1];
+      if (!from || !to) return;
+      const weightValue = parts[2] !== undefined ? Number(parts[2]) : 1;
+      const weight = Number.isFinite(weightValue) ? weightValue : 1;
+      nodeLabels.add(from);
+      nodeLabels.add(to);
+      edges.push({
+        from,
+        to,
+        width: 1 + Math.max(0, weight),
+        arrows: 'to',
+        label: weight ? String(weight) : ''
+      });
+    });
+    if (!edges.length) {
+      if (errorsEl) errorsEl.textContent = 'Please enter at least one valid edge (from,to,weight).';
+      if (statsEl) statsEl.innerHTML = '';
+      if (networkInstance) {
+        networkInstance.setData({ nodes: new vis.DataSet([]), edges: new vis.DataSet([]) });
+      }
+      return;
+    }
+    if (errorsEl) errorsEl.textContent = '';
+    const nodes = Array.from(nodeLabels).map(label => ({ id: label, label }));
+    const data = { nodes: new vis.DataSet(nodes), edges: new vis.DataSet(edges) };
+    if (!networkInstance && visContainer) {
+      networkInstance = new vis.Network(visContainer, data, options);
+    } else if (networkInstance) {
+      networkInstance.setData(data);
+    }
+    renderDegreeStats(nodes, edges);
+  }
+  if (drawButton) {
+    drawButton.addEventListener('click', drawNetwork);
+  }
+  drawNetwork();
+}
+
+function initScrollFeatures() {
+  const progressBar = document.querySelector('.progress-bar');
+  const backToTop = document.querySelector('.back-to-top');
+  const navLinks = Array.from(document.querySelectorAll('.nav-link'));
+  const sections = Array.from(document.querySelectorAll('.section-block'));
+  if (navLinks.length) {
+    navLinks[0].classList.add('nav-link--active');
+  }
+  function updateProgress() {
+    if (progressBar) {
+      const scrollTop = window.scrollY;
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const ratio = docHeight > 0 ? Math.min(1, Math.max(0, scrollTop / docHeight)) : 0;
+      progressBar.style.width = `${ratio * 100}%`;
+    }
+    if (backToTop) {
+      backToTop.classList.toggle('back-to-top--visible', window.scrollY > 480);
+    }
+  }
+  window.addEventListener('scroll', updateProgress, { passive: true });
+  updateProgress();
+  if (backToTop) {
+    backToTop.addEventListener('click', event => {
+      event.preventDefault();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  }
+  if ('IntersectionObserver' in window) {
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        const id = entry.target.getAttribute('id');
+        navLinks.forEach(link => {
+          const href = link.getAttribute('href');
+          link.classList.toggle('nav-link--active', href === `#${id}`);
+        });
+      });
+    }, { threshold: 0.35 });
+    sections.forEach(section => observer.observe(section));
+  }
+}
+
+// Kick everything off once the DOM is ready.
+document.addEventListener('DOMContentLoaded', function () {
+  initCentralityVis();
+  initRepresentationPlayground();
+  initModelsPlayground();
+  initEdgeScratchpad();
+  initScrollFeatures();
+});
+</script>
+</body>
+</html>
