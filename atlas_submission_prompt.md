@@ -12,11 +12,11 @@ Field values to enter
 - Type of submission: Education / teaching resource (lesson-style software)
 - Main subject of the paper: network analysis, social science methods, pedagogy, interactive visualization
 - Message to editors:
-  “Paper and bib in paper.md / paper.bib; MIT license; built JATS + PDF with inara (docker run … openjournals/inara paper.md). Offline-first HTML lecture with interactive network models, centrality viewer, edge-list scratchpad, and R code toggles for grad methods courses. ORCID: 0000-0003-1733-2506; affiliation ROR: https://ror.org/02ttsq026.”
+  “Paper and bib in paper.md / paper.bib. Code MIT; instructional content CC BY 4.0 (LICENSE-content). Built JATS + PDF with Open Journals inara (docker run … --env JOURNAL=jose openjournals/inara -i paper.md). Release v1.0.0 archived at Zenodo DOI 10.5281/zenodo.17715748. Offline-first HTML lecture with interactive network models, centrality viewer, edge-list scratchpad, and R code toggles for grad methods courses. ORCID: 0000-0003-1733-2506; affiliation ROR: https://ror.org/02ttsq026. Note: one large CSV tracked via Git LFS.”
 
 Checkboxes to tick
 - I certify that I am submitting software for which I am a primary author.
-- I have verified that my paper compiles using one of these tools. (Yes: openjournals/inara)
+- I have verified that my paper compiles using one of these tools. (Yes: openjournals/inara with JOURNAL=jose)
 - I confirm that I read and will adhere to the JOSE code of conduct.
 
 Steps
